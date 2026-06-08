@@ -45,3 +45,6 @@ next-env.d.ts
 *.swp
 *.swo
 *~
+
+# project notes
+battle-plan-onlythebest-deals.md

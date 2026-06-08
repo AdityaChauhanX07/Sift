@@ -1,13 +1,18 @@
 /**
  * Thin Nimble client for Sift.
  *
- * Wraps Nimble's realtime SERP API (the one path we verified during de-risk:
- * google_search with parse:true). Returns typed, parsed entities and strips the
- * giant raw `html_content` blob before handing anything back.
+ * Wraps Nimble's realtime SERP API (google_search with parse:true) for finding
+ * candidates, and the realtime web (Extract) API for enriching a single product
+ * page. Returns typed, parsed entities and strips the giant raw `html_content`
+ * blob before handing anything back.
  */
 import type { DealCandidate } from "./types";
 
 const SERP_ENDPOINT = "https://api.webit.live/api/v1/realtime/serp";
+const WEB_ENDPOINT = "https://api.webit.live/api/v1/realtime/web";
+
+/** Per-call timeout for an Extract request, in milliseconds. */
+const EXTRACT_TIMEOUT_MS = 15_000;
 
 /**
  * A parsed Google Shopping result, as it appears under
@@ -47,6 +52,25 @@ export interface OrganicResult {
 export interface SearchDealsResult {
   shopping: ShoppingResult[];
   organic: OrganicResult[];
+}
+
+/**
+ * Structured data Nimble Extract returns for a single product page.
+ *
+ * Deliberately open-ended: we haven't pinned the real shape yet (that's what
+ * scripts/test-extract.ts is for). Once we've inspected a live response we can
+ * promote the fields we actually use to first-class properties. The raw HTML is
+ * always stripped before this leaves the client.
+ */
+export interface ExtractedProduct {
+  status?: string;
+  status_code?: number;
+  msg?: string;
+  parsing?: {
+    entities?: Record<string, unknown>;
+    [key: string]: unknown;
+  };
+  [key: string]: unknown;
 }
 
 /** Shape of the relevant slice of a Nimble SERP response. */
@@ -127,6 +151,60 @@ export class NimbleClient {
       shopping: entities.ShoppingResult ?? [],
       organic: entities.OrganicResult ?? [],
     };
+  }
+
+  /**
+   * Fetch and parse a single product page via Nimble's realtime web (Extract)
+   * API. Used to enrich a candidate with real on-page data (price, reviews,
+   * seller, etc.) before the LLM judges it.
+   *
+   * This is best-effort: it never throws. On a timeout (15s), transport error,
+   * non-JSON body, or non-success response it returns null so the investigation
+   * pipeline can degrade gracefully instead of crashing. The giant raw
+   * `html_content` blob is stripped before returning.
+   */
+  async extractProductPage(url: string): Promise<ExtractedProduct | null> {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), EXTRACT_TIMEOUT_MS);
+
+    try {
+      const res = await fetch(WEB_ENDPOINT, {
+        method: "POST",
+        headers: {
+          Authorization: this.authHeader,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          url,
+          render: false,
+          country: "US",
+          locale: "en",
+          parse: true,
+        }),
+        signal: controller.signal,
+      });
+
+      const text = await res.text();
+
+      let json: ExtractedProduct;
+      try {
+        json = JSON.parse(text);
+      } catch {
+        return null;
+      }
+
+      // Never let the giant raw HTML escape this client.
+      delete json.html_content;
+
+      if (!res.ok || json.status === "failed") return null;
+
+      return json;
+    } catch {
+      // Timeout (abort) or transport error — degrade to null.
+      return null;
+    } finally {
+      clearTimeout(timeout);
+    }
   }
 }
 

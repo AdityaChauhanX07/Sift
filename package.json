@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "test:nimble": "tsx scripts/test-nimble.ts",
+    "test:extract": "tsx scripts/test-extract.ts",
     "cache:golden": "tsx scripts/cache-golden-query.ts"
   },
   "dependencies": {
