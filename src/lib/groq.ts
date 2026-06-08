@@ -6,21 +6,38 @@
  * and degrade gracefully (mark as "trap") whenever anything goes wrong.
  */
 import Groq from "groq-sdk";
+import type { OrganicResult } from "./nimble";
 import type { DealCandidate, InvestigationResult, Verdict } from "./types";
 
 const MODEL = "llama-3.3-70b-versatile";
 
-const SYSTEM_PROMPT = `You are Sift, a ruthless deal investigator. You analyze shopping deals and determine which are trustworthy and which are traps.
+const SYSTEM_PROMPT = `You are Sift, a ruthless deal investigator. You analyze shopping deals to separate genuine bargains from traps.
 
-For each deal, evaluate:
-1. PRICE ANALYSIS: Is the discount realistic? Is the price suspiciously low for the product category? Is there actually a discount or is "old_price" fabricated?
-2. MERCHANT TRUST: Is this a known, reputable retailer (Amazon, Best Buy, Walmart, Target = generally trusted) or an unknown/suspicious merchant?
-3. DEAL QUALITY: Is this actually a good deal, or is it a regular price disguised as a sale?
-4. RED FLAGS: Look for signs of dropshipping, fake markups, bait-and-switch, or too-good-to-be-true pricing.
+ANALYSIS FRAMEWORK for each deal:
+1. MERCHANT TRUST: Tier 1 (Amazon, Best Buy, Walmart, Target, Costco) = baseline trust. Tier 2 (known brands selling direct like JLab, Skullcandy, Soundcore via their own site) = moderate trust. Tier 3 (unknown merchants, marketplace sellers like "WJyouxuan", random resellers) = low trust.
+2. PRICE RED FLAGS: Items under $5 for electronics = almost certainly dropship junk from AliExpress. "Was $X, now $Y" where the discount is over 60% = likely inflated original price. Multiple sellers listing the exact same product at wildly different prices = arbitrage/dropship.
+3. LISTING QUALITY: Keyword-stuffed titles ("Bluetooth 5.3 Earbuds Stereo Bass Sports Headphones in Ear Noise Cancelling") = classic dropship/marketplace spam. Clean, specific product names (e.g. "JLab Go Air Pop") = legitimate product.
+4. DEAL AUTHENTICITY: Is this a real sale or an everyday price disguised as a deal? Is the "original price" real or fabricated?
 
-Be aggressive — most deals on the internet are NOT worth trusting. Only 15-30% should pass as "trusted."
+SEVERITY RULES:
+- Be AGGRESSIVE. Most internet deals are traps. Only 20-30% should pass as "trusted."
+- Tier 3 merchants selling sub-$10 electronics = ALWAYS a trap
+- Keyword-stuffed titles = ALWAYS a trap
+- Same product appearing from multiple unknown sellers at rock-bottom prices = trap
+- Known retailers at reasonable prices with clean listings = trusted
 
-Respond with ONLY valid JSON, no markdown, no explanation. Format:
+For EACH deal, provide:
+- Specific, varied evidence (not generic "known retailer" — say WHY it's trusted or WHY it's a trap)
+- Flags should be concrete: "Title is keyword-stuffed spam", "Price $2.44 suggests AliExpress dropship", "WJyouxuan is an unknown marketplace seller", "50% off from Best Buy is a verified seasonal sale"
+
+CRITICAL SEVERITY RULES — be harsh:
+- A known retailer listing a product at its REGULAR price is NOT a deal. Verdict: trap. Flag: "Regular price disguised as a deal — no actual savings"
+- If there's no old_price / no discount shown, it's not a deal unless the price is genuinely exceptional for the category. Verdict: trap. Flag: "No verified discount"
+- Duplicate listings (same product from same or different sellers) = trap for all but the best-priced one. Flag: "Duplicate listing — better price available elsewhere in results"
+- Review/comparison sites (rtings.com, wirecutter, etc.) are provided ONLY as supporting context, never as candidates. Use them as evidence — e.g. "rtings.com recommends this model" supports a trusted verdict. Do NOT judge or flag them.
+- Only 20-30% of ALL candidates should survive as "trusted". If you're approving more than that, you're being too lenient.
+
+Respond with ONLY valid JSON, no markdown. Format:
 {
   "results": [
     {
@@ -28,7 +45,7 @@ Respond with ONLY valid JSON, no markdown, no explanation. Format:
       "trustScore": 72,
       "verdict": "trusted",
       "flags": [],
-      "evidence": ["Known retailer Best Buy", "Price consistent with market rate for this category"]
+      "evidence": ["Best Buy is a Tier 1 retailer with buyer protection", "32% discount on JLab is consistent with their regular sale cycles"]
     }
   ]
 }`;
@@ -92,6 +109,7 @@ export class GroqInvestigator {
    */
   async investigateDeals(
     candidates: DealCandidate[],
+    organic: OrganicResult[] = [],
   ): Promise<InvestigationResult[]> {
     if (candidates.length === 0) return [];
 
@@ -106,17 +124,31 @@ export class GroqInvestigator {
       is_on_sale: c.isOnSale,
     }));
 
+    // Organic results aren't candidates — feed them as supporting context so the
+    // model can cite review sites as evidence rather than judging them.
+    const contextBlock =
+      organic.length > 0
+        ? `\n\nCONTEXT FROM REVIEW SITES (use as supporting evidence, these are NOT candidates):\n${organic
+            .map(
+              (o) =>
+                `- ${o.title} (${o.cleaned_domain ?? o.displayed_url ?? "unknown"})${
+                  o.snippet ? `: ${o.snippet}` : ""
+                }`,
+            )
+            .join("\n")}`
+        : "";
+
     const userPrompt = `Investigate these ${candidates.length} deals and return your JSON verdict for each by index:\n\n${JSON.stringify(
       dealsForModel,
       null,
       2,
-    )}`;
+    )}${contextBlock}\n\nRemember: only 20-30% should be trusted. Be ruthless.`;
 
     let content: string;
     try {
       const completion = await this.client.chat.completions.create({
         model: MODEL,
-        temperature: 0.2,
+        temperature: 0,
         response_format: { type: "json_object" },
         messages: [
           { role: "system", content: SYSTEM_PROMPT },

@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test:nimble": "tsx scripts/test-nimble.ts"
+    "test:nimble": "tsx scripts/test-nimble.ts",
+    "cache:golden": "tsx scripts/cache-golden-query.ts"
   },
   "dependencies": {
     "groq-sdk": "^1.2.1",

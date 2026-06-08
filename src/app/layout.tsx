@@ -15,7 +15,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Sift — deal trust agent",
+  title: "Sift",
   description: "Sift sorts trustworthy deals from traps.",
 };
 

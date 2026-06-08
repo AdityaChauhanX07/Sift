@@ -362,7 +362,7 @@ function Reveal({
             title="The trap wall"
             subtitle={`${traps.length} deals we rejected`}
           />
-          <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-6 grid grid-cols-2 gap-2.5 lg:grid-cols-4">
             {traps.map((r, i) => (
               <TrapCard key={i} result={r} index={i} />
             ))}
@@ -433,60 +433,43 @@ function TrapCard({
   result: InvestigationResult;
   index: number;
 }) {
-  const { candidate, flags, evidence } = result;
+  const { candidate, flags } = result;
   return (
     <article
-      className="group relative animate-fade-in-up overflow-hidden rounded-lg border border-zinc-800/80 bg-zinc-900/40 p-4 opacity-0 grayscale transition-all duration-300 hover:z-10 hover:-translate-y-0.5 hover:grayscale-0"
+      className="group relative animate-fade-in-up overflow-hidden rounded-lg border border-zinc-800/80 bg-zinc-900/40 p-3 opacity-0 grayscale transition-all duration-300 hover:z-20 hover:scale-105 hover:grayscale-0 hover:border-red-900/60"
       style={{ animationDelay: `${Math.min(index, 14) * 45}ms` }}
     >
       {/* TRAP stamp */}
-      <div className="pointer-events-none absolute right-3 top-3 z-10 animate-stamp-in rounded border-2 border-red-600/80 px-2 py-0.5 font-mono text-[11px] font-black uppercase tracking-widest text-red-500/90">
+      <div className="pointer-events-none absolute right-2 top-2 z-10 animate-stamp-in rounded border border-red-600/80 px-1 py-px font-mono text-[8px] font-black uppercase tracking-widest text-red-500/90">
         Trap
       </div>
 
-      <h4 className="max-w-[78%] text-sm font-semibold text-zinc-500 line-through decoration-red-700/70">
+      <h4 className="truncate pr-10 text-xs font-semibold text-zinc-400">
         {candidate.title}
       </h4>
 
-      <div className="mt-2 flex items-center gap-2 font-mono text-xs text-zinc-600">
+      <div className="mt-1.5 flex items-center gap-1.5 font-mono text-[10px] text-zinc-600">
         <span className="text-zinc-400">{candidate.price || "—"}</span>
-        {candidate.oldPrice && (
-          <span className="text-zinc-700 line-through">{candidate.oldPrice}</span>
-        )}
         <span>·</span>
-        <span>{candidate.merchant || "unknown"}</span>
+        <span className="truncate">{candidate.merchant || "unknown"}</span>
       </div>
 
-      {/* hover reveal: flags + evidence */}
-      <div className="grid grid-rows-[0fr] transition-all duration-300 ease-out group-hover:grid-rows-[1fr] group-hover:pt-3">
-        <div className="overflow-hidden">
-          {flags.length > 0 && (
-            <ul className="flex flex-wrap gap-1.5">
-              {flags.map((flag, i) => (
-                <li
-                  key={i}
-                  className="rounded border border-red-900/60 bg-red-950/40 px-1.5 py-0.5 font-mono text-[10px] text-red-400"
-                >
-                  ⚑ {flag}
-                </li>
-              ))}
-            </ul>
-          )}
-          {evidence.length > 0 && (
-            <ul className="mt-2 space-y-1">
-              {evidence.map((e, i) => (
-                <li
-                  key={i}
-                  className="flex gap-1.5 text-[11px] leading-snug text-red-300/70"
-                >
-                  <span className="text-red-700">›</span>
-                  <span>{e}</span>
-                </li>
-              ))}
-            </ul>
-          )}
+      {/* hover overlay: flags in red */}
+      {flags.length > 0 && (
+        <div className="pointer-events-none absolute inset-0 flex flex-col justify-end gap-1 bg-gradient-to-t from-red-950/95 via-red-950/80 to-transparent p-3 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+          <ul className="space-y-1">
+            {flags.map((flag, i) => (
+              <li
+                key={i}
+                className="flex gap-1 text-[10px] leading-snug text-red-300"
+              >
+                <span className="text-red-500">⚑</span>
+                <span>{flag}</span>
+              </li>
+            ))}
+          </ul>
         </div>
-      </div>
+      )}
     </article>
   );
 }
@@ -558,7 +541,7 @@ function TrustedCard({
               key={i}
               className="flex gap-2 text-xs leading-snug text-zinc-400"
             >
-              <span className="text-emerald-500">•</span>
+              <span className="mt-px text-[11px] font-bold text-emerald-400">✓</span>
               <span>{e}</span>
             </li>
           ))}

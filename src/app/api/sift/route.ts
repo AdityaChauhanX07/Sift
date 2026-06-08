@@ -6,6 +6,7 @@
  */
 import { NextResponse } from "next/server";
 import { investigate } from "@/lib/investigator";
+import { getCachedResult, setCachedResult } from "@/lib/cache";
 
 // Nimble + Groq calls are dynamic; never cache this route.
 export const dynamic = "force-dynamic";
@@ -32,9 +33,23 @@ export async function POST(request: Request) {
     );
   }
 
+  // Serve a pre-computed result instantly when we have one — keeps the demo
+  // working even if Nimble or Groq is down.
+  const cached = getCachedResult(query);
+  if (cached) {
+    return NextResponse.json({ ...cached, cached: true });
+  }
+
   try {
     const result = await investigate(query);
-    return NextResponse.json(result);
+    // Cache for next time, then return live. Persisting failures shouldn't fail
+    // the request, so swallow any write error.
+    try {
+      setCachedResult(query, result);
+    } catch (cacheErr) {
+      console.error("[/api/sift] failed to cache result:", cacheErr);
+    }
+    return NextResponse.json({ ...result, cached: false });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
     console.error("[/api/sift] failed:", err);
