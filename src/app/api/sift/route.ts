@@ -1,15 +1,16 @@
 /**
  * POST /api/sift
  *
- * First vertical slice: accept { query }, hit Nimble's SERP, and return the
- * normalized deal candidates. Investigation/scoring comes later.
+ * Runs the full investigation pipeline: query -> Nimble candidates -> Groq
+ * verdicts -> a partitioned SiftResult (traps vs. trusted).
  */
 import { NextResponse } from "next/server";
-import { NimbleClient, toDealCandidate } from "@/lib/nimble";
-import type { DealCandidate } from "@/lib/types";
+import { investigate } from "@/lib/investigator";
 
-// Nimble calls are dynamic; never cache this route.
+// Nimble + Groq calls are dynamic; never cache this route.
 export const dynamic = "force-dynamic";
+// LLM investigation can take a while; give it room.
+export const maxDuration = 60;
 
 interface SiftRequestBody {
   query?: unknown;
@@ -20,10 +21,7 @@ export async function POST(request: Request) {
   try {
     body = await request.json();
   } catch {
-    return NextResponse.json(
-      { error: "Invalid JSON body" },
-      { status: 400 },
-    );
+    return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
 
   const query = typeof body.query === "string" ? body.query.trim() : "";
@@ -35,18 +33,8 @@ export async function POST(request: Request) {
   }
 
   try {
-    const nimble = new NimbleClient();
-    const { shopping, organic } = await nimble.searchDeals(query);
-
-    const candidates: DealCandidate[] = shopping.map(toDealCandidate);
-
-    return NextResponse.json({
-      query,
-      totalCandidates: candidates.length,
-      candidates,
-      organicCount: organic.length,
-      organic,
-    });
+    const result = await investigate(query);
+    return NextResponse.json(result);
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
     console.error("[/api/sift] failed:", err);
