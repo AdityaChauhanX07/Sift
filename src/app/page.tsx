@@ -4,6 +4,26 @@ import { useEffect, useState } from "react";
 
 /* ----------------------------- types ----------------------------- */
 
+interface EnrichedData {
+  realPrice: string | null;
+  wasPrice: string | null;
+  isPriceReduced: boolean;
+  sellerName: string | null;
+  brand: string | null;
+  inStock: boolean;
+  averageRating: number | null;
+  totalReviews: number | null;
+  reviewsWithText: number | null;
+  recommendedPercent: number | null;
+  ratingDistribution: {
+    stars5: number;
+    stars4: number;
+    stars3: number;
+    stars2: number;
+    stars1: number;
+  } | null;
+}
+
 interface DealCandidate {
   title: string;
   price: string;
@@ -12,6 +32,7 @@ interface DealCandidate {
   thumbnailUrl: string | null;
   isOnSale: boolean;
   sourceUrl: string | null;
+  enrichment?: EnrichedData;
 }
 
 interface InvestigationResult {
@@ -485,6 +506,12 @@ function TrustedCard({
 }) {
   const { candidate, trustScore, evidence } = result;
   const savings = savingsPercent(candidate.price, candidate.oldPrice);
+  const { enrichment } = candidate;
+  // The "VERIFIED DATA:" bullet is replaced by the structured report below,
+  // so drop it from the regular evidence list to avoid showing it twice.
+  const otherEvidence = evidence.filter(
+    (e) => !e.trimStart().startsWith("VERIFIED DATA:"),
+  );
 
   return (
     <article
@@ -534,9 +561,11 @@ function TrustedCard({
         </div>
       </div>
 
-      {evidence.length > 0 && (
+      {enrichment && <VerifiedReport enrichment={enrichment} />}
+
+      {otherEvidence.length > 0 && (
         <ul className="mt-4 space-y-1.5 pl-2">
-          {evidence.map((e, i) => (
+          {otherEvidence.map((e, i) => (
             <li
               key={i}
               className="flex gap-2 text-xs leading-snug text-zinc-400"
@@ -548,5 +577,149 @@ function TrustedCard({
         </ul>
       )}
     </article>
+  );
+}
+
+/* --------------------------- verified-by-sift report --------------------------- */
+
+function VerifiedReport({ enrichment }: { enrichment: EnrichedData }) {
+  const {
+    realPrice,
+    wasPrice,
+    isPriceReduced,
+    sellerName,
+    averageRating,
+    totalReviews,
+    reviewsWithText,
+    recommendedPercent,
+    ratingDistribution,
+  } = enrichment;
+
+  const hasPrice = realPrice !== null;
+  const hasReviews = averageRating !== null && totalReviews !== null;
+
+  return (
+    <section className="mt-4 ml-2 rounded-lg border border-emerald-900/40 bg-emerald-950/20 p-3">
+      <div className="mb-2.5 flex items-center gap-1.5 font-mono text-[10px] font-bold uppercase tracking-wider text-emerald-400">
+        <span>🔍</span>
+        <span>Verified</span>
+        <span className="text-emerald-700">— by Sift</span>
+      </div>
+
+      <div className="space-y-2 text-xs text-zinc-300">
+        {/* real price */}
+        {hasPrice && (
+          <div className="flex items-baseline gap-2">
+            <span className="font-mono font-semibold text-emerald-300">
+              {realPrice}
+            </span>
+            {isPriceReduced && wasPrice ? (
+              <span className="text-zinc-500">
+                (was{" "}
+                <span className="line-through">{wasPrice}</span>) — genuine sale{" "}
+                <span className="text-emerald-400">✓</span>
+              </span>
+            ) : (
+              <span className="text-zinc-500">— everyday price</span>
+            )}
+          </div>
+        )}
+
+        {/* seller */}
+        {sellerName && (
+          <div className="flex items-center gap-1.5">
+            <span className="text-emerald-400">✓</span>
+            <span>
+              Sold by <span className="text-zinc-100">{sellerName}</span>{" "}
+              <span className="text-zinc-500">(1st party)</span>
+            </span>
+          </div>
+        )}
+
+        {/* review summary */}
+        {hasReviews && (
+          <div className="flex items-center gap-2">
+            <StarRating rating={averageRating!} />
+            <span>
+              <span className="font-semibold text-zinc-100">
+                {averageRating!.toFixed(1)}★
+              </span>{" "}
+              <span className="text-zinc-500">
+                from {totalReviews!.toLocaleString()} reviews
+              </span>
+            </span>
+          </div>
+        )}
+
+        {/* review quality */}
+        {(reviewsWithText !== null || recommendedPercent !== null) && (
+          <div className="text-[11px] text-zinc-500">
+            {reviewsWithText !== null && (
+              <span>{reviewsWithText.toLocaleString()} written reviews</span>
+            )}
+            {reviewsWithText !== null && recommendedPercent !== null && (
+              <span> · </span>
+            )}
+            {recommendedPercent !== null && (
+              <span>{recommendedPercent}% recommended</span>
+            )}
+          </div>
+        )}
+
+        {/* rating distribution */}
+        {ratingDistribution && <RatingBar dist={ratingDistribution} />}
+      </div>
+    </section>
+  );
+}
+
+function StarRating({ rating }: { rating: number }) {
+  return (
+    <span className="font-mono text-xs leading-none" aria-hidden>
+      {[0, 1, 2, 3, 4].map((i) => (
+        <span
+          key={i}
+          className={i < Math.round(rating) ? "text-amber-400" : "text-zinc-700"}
+        >
+          ★
+        </span>
+      ))}
+    </span>
+  );
+}
+
+function RatingBar({
+  dist,
+}: {
+  dist: NonNullable<EnrichedData["ratingDistribution"]>;
+}) {
+  const total =
+    dist.stars5 + dist.stars4 + dist.stars3 + dist.stars2 + dist.stars1;
+  if (total === 0) return null;
+
+  const segments = [
+    { count: dist.stars5, color: "bg-emerald-500", label: "5★" },
+    { count: dist.stars4, color: "bg-emerald-600", label: "4★" },
+    { count: dist.stars3, color: "bg-amber-500", label: "3★" },
+    { count: dist.stars2, color: "bg-red-500", label: "2★" },
+    { count: dist.stars1, color: "bg-red-600", label: "1★" },
+  ];
+
+  return (
+    <div
+      className="flex h-1.5 overflow-hidden rounded-full bg-zinc-800"
+      title={segments.map((s) => `${s.label}: ${s.count}`).join("  ")}
+    >
+      {segments.map(
+        (s) =>
+          s.count > 0 && (
+            <div
+              key={s.label}
+              className={s.color}
+              style={{ width: `${(s.count / total) * 100}%` }}
+            />
+          ),
+      )}
+    </div>
   );
 }
