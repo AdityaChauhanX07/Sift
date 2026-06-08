@@ -11,6 +11,7 @@
     "test:extract": "tsx scripts/test-extract.ts",
     "test:aliexpress": "tsx scripts/test-aliexpress.ts",
     "test:bestbuy": "tsx scripts/test-bestbuy-extract.ts",
+    "test:stress": "tsx scripts/stress-test.ts",
     "cache:golden": "tsx scripts/cache-golden-query.ts",
     "enrich:golden": "tsx scripts/enrich-golden-query.ts"
   },

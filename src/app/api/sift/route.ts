@@ -102,7 +102,7 @@ export async function POST(request: Request) {
         const cached = getCachedResult(query);
         if (cached) {
           await streamCachedProgress(send, cached);
-          send({ stage: "complete", data: cached });
+          send({ stage: "complete", data: cached, cached: true });
           controller.close();
           return;
         }
@@ -114,7 +114,7 @@ export async function POST(request: Request) {
         } catch (cacheErr) {
           console.error("[/api/sift] failed to cache result:", cacheErr);
         }
-        send({ stage: "complete", data: result });
+        send({ stage: "complete", data: result, cached: false });
         controller.close();
       } catch (err) {
         const message = err instanceof Error ? err.message : "Unknown error";

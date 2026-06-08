@@ -111,6 +111,8 @@ export interface ProgressEvent {
   total?: number;
   /** The full result, present only on the "complete" stage. */
   data?: SiftResult;
+  /** Whether the result was served from cache — set on the "complete" stage. */
+  cached?: boolean;
 }
 
 /** Callback the pipeline calls to report progress as it works. */
