@@ -8,6 +8,32 @@
  */
 
 /**
+ * Verified product data pulled directly from a listing's page via Nimble
+ * Extract. Unlike the SERP metadata on DealCandidate, these are real on-page
+ * facts (true price, seller, review distribution) — the LLM should weight them
+ * heavily over inferred signals.
+ */
+export interface EnrichedData {
+  realPrice: string | null;
+  wasPrice: string | null;
+  isPriceReduced: boolean;
+  sellerName: string | null;
+  brand: string | null;
+  inStock: boolean;
+  averageRating: number | null;
+  totalReviews: number | null;
+  reviewsWithText: number | null;
+  recommendedPercent: number | null;
+  ratingDistribution: {
+    stars5: number;
+    stars4: number;
+    stars3: number;
+    stars2: number;
+    stars1: number;
+  } | null;
+}
+
+/**
  * A single shopping deal we found and may investigate. `nimbleRaw` keeps the
  * untouched Nimble entity around so later investigation steps can mine fields
  * we haven't promoted to first-class properties yet.
@@ -22,6 +48,8 @@ export interface DealCandidate {
   isOnSale: boolean;
   /** Link to the deal, when Nimble provides one (often empty for SERP). */
   sourceUrl: string | null;
+  /** Verified data from direct product-page extraction, when available. */
+  enrichment?: EnrichedData;
   /** The raw Nimble entity this candidate was derived from. */
   nimbleRaw: unknown;
 }

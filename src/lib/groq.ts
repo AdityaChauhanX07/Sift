@@ -7,11 +7,18 @@
  */
 import Groq from "groq-sdk";
 import type { OrganicResult } from "./nimble";
-import type { DealCandidate, InvestigationResult, Verdict } from "./types";
+import type {
+  DealCandidate,
+  EnrichedData,
+  InvestigationResult,
+  Verdict,
+} from "./types";
 
 const MODEL = "llama-3.3-70b-versatile";
 
 const SYSTEM_PROMPT = `You are Sift, a ruthless deal investigator. You analyze shopping deals to separate genuine bargains from traps.
+
+Some candidates include VERIFIED DATA from direct product page extraction (real price, seller, and review distribution). Weight this heavily — it's real, not inferred. Prefer it over surface signals like the title or SERP price, and cite the specific numbers (price, review count, % recommended) in your evidence.
 
 ANALYSIS FRAMEWORK for each deal:
 1. MERCHANT TRUST: Tier 1 (Amazon, Best Buy, Walmart, Target, Costco) = baseline trust. Tier 2 (known brands selling direct like JLab, Skullcandy, Soundcore via their own site) = moderate trust. Tier 3 (unknown merchants, marketplace sellers like "WJyouxuan", random resellers) = low trust.
@@ -91,6 +98,71 @@ function normalizeScore(value: unknown): number {
   return Math.max(0, Math.min(100, Math.round(value)));
 }
 
+/** Whole-number percentage of `part` within `total` (0 when total is 0). */
+function pct(part: number, total: number): number {
+  return total > 0 ? Math.round((part / total) * 100) : 0;
+}
+
+/** First-party retailers whose own listings carry buyer protection. */
+const FIRST_PARTY_SELLER = /walmart\.com|amazon\.com|bestbuy\.com|target\.com|costco\.com/i;
+
+/**
+ * Render verified Extract data as one human-readable line for the LLM prompt.
+ * e.g. "VERIFIED DATA: Real price $16.99 (was $29.38, genuine sale). Seller:
+ * Walmart.com (1st party). Rating: 4.5/5 from 39,018 reviews ..."
+ */
+function formatEnrichment(e: EnrichedData): string {
+  const parts: string[] = [];
+
+  if (e.realPrice) {
+    const sale = e.wasPrice
+      ? ` (was ${e.wasPrice}, ${e.isPriceReduced ? "genuine sale" : "no real reduction"})`
+      : "";
+    parts.push(`Real price ${e.realPrice}${sale}.`);
+  }
+
+  if (e.sellerName) {
+    const party = FIRST_PARTY_SELLER.test(e.sellerName)
+      ? "1st party"
+      : "marketplace seller";
+    parts.push(`Seller: ${e.sellerName} (${party}).`);
+  }
+
+  if (e.brand) parts.push(`Brand: ${e.brand}.`);
+  if (e.inStock === false) parts.push("Currently out of stock.");
+
+  if (e.averageRating !== null && e.totalReviews !== null) {
+    const detail = [
+      e.reviewsWithText !== null
+        ? `${e.reviewsWithText.toLocaleString()} with text`
+        : null,
+      e.recommendedPercent !== null
+        ? `${e.recommendedPercent}% recommended`
+        : null,
+    ]
+      .filter(Boolean)
+      .join(", ");
+    parts.push(
+      `Rating: ${e.averageRating}/5 from ${e.totalReviews.toLocaleString()} reviews${
+        detail ? ` (${detail})` : ""
+      }.`,
+    );
+  }
+
+  if (e.ratingDistribution) {
+    const d = e.ratingDistribution;
+    const total = d.stars5 + d.stars4 + d.stars3 + d.stars2 + d.stars1;
+    parts.push(
+      `Distribution: 5★ ${pct(d.stars5, total)}%, 4★ ${pct(d.stars4, total)}%, 3★ ${pct(
+        d.stars3,
+        total,
+      )}%, 2★ ${pct(d.stars2, total)}%, 1★ ${pct(d.stars1, total)}%.`,
+    );
+  }
+
+  return `VERIFIED DATA: ${parts.join(" ")}`;
+}
+
 export class GroqInvestigator {
   private readonly client: Groq;
 
@@ -122,6 +194,9 @@ export class GroqInvestigator {
       old_price: c.oldPrice,
       merchant: c.merchant,
       is_on_sale: c.isOnSale,
+      // Real on-page data, when we extracted it — JSON.stringify drops this key
+      // for un-enriched candidates.
+      verified_data: c.enrichment ? formatEnrichment(c.enrichment) : undefined,
     }));
 
     // Organic results aren't candidates — feed them as supporting context so the

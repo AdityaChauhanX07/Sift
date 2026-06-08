@@ -28,35 +28,37 @@
         ],
         "evidence": [
           "Target is a Tier 1 retailer, but no discount is shown",
-          "Price may be regular price disguised as a deal"
+          "Price $24.99 may be the regular price"
         ]
       },
       {
         "candidate": {
-          "title": "Skullcandy Smokin' Buds XT True Wireless in-Ear Earbuds",
-          "price": "$19.88",
-          "oldPrice": null,
-          "merchant": "Walmart",
+          "title": "JLab Go Pop ANC True Wireless Earbuds",
+          "price": "$14.99",
+          "oldPrice": "$30",
+          "merchant": "Best Buy",
           "thumbnailUrl": null,
-          "isOnSale": false,
+          "isOnSale": true,
           "sourceUrl": null,
           "nimbleRaw": {
             "entity_type": "ShoppingResult",
+            "is_on_sale": true,
             "item_link": "",
+            "old_price": "$30",
             "position": 1,
-            "price": "$19.88",
-            "source": "Walmart",
-            "title": "Skullcandy Smokin' Buds XT True Wireless in-Ear Earbuds"
+            "price": "$14.99",
+            "source": "Best Buy",
+            "title": "JLab Go Pop ANC True Wireless Earbuds"
           }
         },
-        "trustScore": 30,
+        "trustScore": 70,
         "verdict": "trap",
         "flags": [
-          "No verified discount"
+          "Discount may be inflated"
         ],
         "evidence": [
-          "Walmart is a Tier 1 retailer, but no discount is shown",
-          "Price may be regular price disguised as a deal"
+          "Best Buy is a Tier 1 retailer, but the discount may be exaggerated",
+          "Price $14.99 may not be a genuine sale"
         ]
       },
       {
@@ -83,8 +85,69 @@
           "Price $5.00 suggests AliExpress dropship"
         ],
         "evidence": [
-          "Target is a Tier 1 retailer, but price is suspiciously low",
-          "Vivitar is not a well-known brand"
+          "Target is a Tier 1 retailer, but the price is suspiciously low",
+          "No verified reviews or ratings"
+        ]
+      },
+      {
+        "candidate": {
+          "title": "Wireless Earbuds with Bluetooth 5.3, Stereo Bass, Bluetooth Sports Headphones, in Ear, Noise Cancelling",
+          "price": "$2.44",
+          "oldPrice": "$2.89",
+          "merchant": "Walmart - WJyouxuan",
+          "thumbnailUrl": null,
+          "isOnSale": true,
+          "sourceUrl": null,
+          "nimbleRaw": {
+            "entity_type": "ShoppingResult",
+            "is_on_sale": true,
+            "item_link": "",
+            "old_price": "$2.89",
+            "position": 1,
+            "price": "$2.44",
+            "source": "Walmart - WJyouxuan",
+            "title": "Wireless Earbuds with Bluetooth 5.3, Stereo Bass, Bluetooth Sports Headphones, in Ear, Noise Cancelling"
+          }
+        },
+        "trustScore": 5,
+        "verdict": "trap",
+        "flags": [
+          "Price $2.44 suggests AliExpress dropship",
+          "WJyouxuan is an unknown marketplace seller"
+        ],
+        "evidence": [
+          "Walmart is a Tier 1 retailer, but WJyouxuan is an unknown seller",
+          "Keyword-stuffed title is a classic dropship/marketplace spam"
+        ]
+      },
+      {
+        "candidate": {
+          "title": "Heyday True Wireless Bluetooth Sweat Resistant Earbuds",
+          "price": "$14.99",
+          "oldPrice": "$18",
+          "merchant": "Target",
+          "thumbnailUrl": null,
+          "isOnSale": true,
+          "sourceUrl": null,
+          "nimbleRaw": {
+            "entity_type": "ShoppingResult",
+            "is_on_sale": true,
+            "item_link": "",
+            "old_price": "$18",
+            "position": 1,
+            "price": "$14.99",
+            "source": "Target",
+            "title": "Heyday True Wireless Bluetooth Sweat Resistant Earbuds"
+          }
+        },
+        "trustScore": 60,
+        "verdict": "trap",
+        "flags": [
+          "Discount may be inflated"
+        ],
+        "evidence": [
+          "Target is a Tier 1 retailer, but the discount may be exaggerated",
+          "Price $14.99 may not be a genuine sale"
         ]
       },
       {
@@ -92,7 +155,7 @@
           "title": "JLab Go Pods ANC True Wireless Earbuds",
           "price": "$20.99",
           "oldPrice": "$30",
-          "merchant": "Walmart - JLab",
+          "merchant": "Best Buy",
           "thumbnailUrl": null,
           "isOnSale": true,
           "sourceUrl": null,
@@ -103,18 +166,18 @@
             "old_price": "$30",
             "position": 1,
             "price": "$20.99",
-            "source": "Walmart - JLab",
+            "source": "Best Buy",
             "title": "JLab Go Pods ANC True Wireless Earbuds"
           }
         },
-        "trustScore": 60,
+        "trustScore": 65,
         "verdict": "trap",
         "flags": [
-          "Duplicate listing — better price available elsewhere in results"
+          "Discount may be inflated"
         ],
         "evidence": [
-          "Walmart - JLab is a known brand, but price may not be the best",
-          "Similar product available at Best Buy for a lower price"
+          "Best Buy is a Tier 1 retailer, but the discount may be exaggerated",
+          "Price $20.99 may not be a genuine sale"
         ]
       },
       {
@@ -142,15 +205,49 @@
         ],
         "evidence": [
           "Best Buy is a Tier 1 retailer, but no discount is shown",
-          "Price may be regular price disguised as a deal"
+          "Price $24.99 may be the regular price"
         ]
       },
       {
         "candidate": {
-          "title": "Wireless Earbuds with Bluetooth 5.3, Stereo Bass, Bluetooth Sports Headphones, in Ear, Noise Cancelling",
-          "price": "$2.44",
-          "oldPrice": "$2.89",
-          "merchant": "Walmart - WJyouxuan",
+          "title": "Onn True Wireless Charging Case",
+          "price": "$14.88",
+          "oldPrice": "$18",
+          "merchant": "Walmart",
+          "thumbnailUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTvMUTEzrtVcwcTbcfzrp1jalgUELrq_q9GMDEAy8RwodW2SGn6HouZkmMyuV3TrY1lwufHdZMhgUyAtN-OAZHJcxI-C5IXw3GvNpD7Za0QePYhv6vh1wEW",
+          "isOnSale": true,
+          "sourceUrl": null,
+          "nimbleRaw": {
+            "entity_type": "ShoppingResult",
+            "is_on_sale": true,
+            "item_link": "",
+            "old_price": "$18",
+            "position": 1,
+            "price": "$14.88",
+            "source": "Walmart",
+            "thumbnail": {
+              "alt": "Onn True Wireless Charging Case. 16% OFF. ",
+              "image": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTvMUTEzrtVcwcTbcfzrp1jalgUELrq_q9GMDEAy8RwodW2SGn6HouZkmMyuV3TrY1lwufHdZMhgUyAtN-OAZHJcxI-C5IXw3GvNpD7Za0QePYhv6vh1wEW"
+            },
+            "title": "Onn True Wireless Charging Case"
+          }
+        },
+        "trustScore": 55,
+        "verdict": "trap",
+        "flags": [
+          "Discount may be inflated"
+        ],
+        "evidence": [
+          "Walmart is a Tier 1 retailer, but the discount may be exaggerated",
+          "Price $14.88 may not be a genuine sale"
+        ]
+      },
+      {
+        "candidate": {
+          "title": "JLab JBuds Mini True Wireless Earbuds",
+          "price": "$31.00",
+          "oldPrice": "$40",
+          "merchant": "Best Buy",
           "thumbnailUrl": null,
           "isOnSale": true,
           "sourceUrl": null,
@@ -158,23 +255,53 @@
             "entity_type": "ShoppingResult",
             "is_on_sale": true,
             "item_link": "",
-            "old_price": "$2.89",
+            "old_price": "$40",
             "position": 1,
-            "price": "$2.44",
-            "source": "Walmart - WJyouxuan",
-            "title": "Wireless Earbuds with Bluetooth 5.3, Stereo Bass, Bluetooth Sports Headphones, in Ear, Noise Cancelling"
+            "price": "$31.00",
+            "source": "Best Buy",
+            "title": "JLab JBuds Mini True Wireless Earbuds"
           }
         },
-        "trustScore": 0,
+        "trustScore": 45,
         "verdict": "trap",
         "flags": [
-          "Title is keyword-stuffed spam",
-          "Price $2.44 suggests AliExpress dropship",
-          "WJyouxuan is an unknown marketplace seller"
+          "Discount may be inflated"
         ],
         "evidence": [
-          "Walmart - WJyouxuan is not a trusted seller",
-          "Product title is overly promotional"
+          "Best Buy is a Tier 1 retailer, but the discount may be exaggerated",
+          "Price $31.00 may not be a genuine sale"
+        ]
+      },
+      {
+        "candidate": {
+          "title": "Soundplay V3 Wireless Earbuds",
+          "price": "$26.98",
+          "oldPrice": null,
+          "merchant": "Home Depot",
+          "thumbnailUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQBBGLaW99s6KJDsAplpU-yADKUlJkp2Jpu_8hf0LdI6-3Pw0Yqi3wb17DB9JTmtkYsOktGQlfoCvHzbwcaIddmym_utEUVM2ogAgQnurC0urq7j_hbzsbU",
+          "isOnSale": false,
+          "sourceUrl": null,
+          "nimbleRaw": {
+            "entity_type": "ShoppingResult",
+            "item_link": "",
+            "position": 1,
+            "price": "$26.98",
+            "source": "Home Depot",
+            "thumbnail": {
+              "alt": "Soundplay V3 Wireless Earbuds. ",
+              "image": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQBBGLaW99s6KJDsAplpU-yADKUlJkp2Jpu_8hf0LdI6-3Pw0Yqi3wb17DB9JTmtkYsOktGQlfoCvHzbwcaIddmym_utEUVM2ogAgQnurC0urq7j_hbzsbU"
+            },
+            "title": "Soundplay V3 Wireless Earbuds"
+          }
+        },
+        "trustScore": 30,
+        "verdict": "trap",
+        "flags": [
+          "No verified discount"
+        ],
+        "evidence": [
+          "Home Depot is not a typical electronics retailer",
+          "Price $26.98 may be the regular price"
         ]
       },
       {
@@ -201,179 +328,79 @@
             "title": "Up to 65% off!Wireless Earbuds, Bluetooth 5.3 Earbuds Stereo Bass, Bluetooth Sports Headphones in Ear Noise Cancelling Mic With Mini Charging Case Ear"
           }
         },
-        "trustScore": 0,
+        "trustScore": 5,
         "verdict": "trap",
         "flags": [
-          "Title is keyword-stuffed spam",
           "Price $2.17 suggests AliExpress dropship",
           "WJyouxuan is an unknown marketplace seller"
         ],
         "evidence": [
-          "Walmart - WJyouxuan is not a trusted seller",
-          "Product title is overly promotional"
+          "Walmart is a Tier 1 retailer, but WJyouxuan is an unknown seller",
+          "Keyword-stuffed title is a classic dropship/marketplace spam"
         ]
       },
       {
         "candidate": {
-          "title": "JLab Fit 2.0 Sport Earbuds",
-          "price": "$29.99",
+          "title": "Icon Wireless Earbuds with Mic",
+          "price": "$8.00",
           "oldPrice": null,
-          "merchant": "DICK'S Sporting Goods",
-          "thumbnailUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRE73wPLtXPtGMDJ2w8RLJJsJ0lh1dSNw1xsydN9Grp-wrbkIbDRrGkS-jPAPzTjdjUD04CzFqxRw_kENi1nX_m_tnjWWIulycfwnEg25I",
+          "merchant": "Five Below",
+          "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQ29aLh6QDSxrHvPgtgHvUB71SCIqQzG5UQABJiFxyy5qyXBENVNiR7Tn0tOKlQj6TJbzTZRNv2EEQdr9Dgz4bLfK7CXHMEYGn24aYwLBymdqhXCmgkh0ZdmA",
           "isOnSale": false,
           "sourceUrl": null,
           "nimbleRaw": {
             "entity_type": "ShoppingResult",
             "item_link": "",
             "position": 1,
-            "price": "$29.99",
-            "source": "DICK'S Sporting Goods",
+            "price": "$8.00",
+            "source": "Five Below",
             "thumbnail": {
-              "alt": "JLab Fit 2.0 Sport Earbuds. ",
-              "image": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRE73wPLtXPtGMDJ2w8RLJJsJ0lh1dSNw1xsydN9Grp-wrbkIbDRrGkS-jPAPzTjdjUD04CzFqxRw_kENi1nX_m_tnjWWIulycfwnEg25I"
+              "alt": "Icon Wireless Earbuds with Mic. ",
+              "image": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQ29aLh6QDSxrHvPgtgHvUB71SCIqQzG5UQABJiFxyy5qyXBENVNiR7Tn0tOKlQj6TJbzTZRNv2EEQdr9Dgz4bLfK7CXHMEYGn24aYwLBymdqhXCmgkh0ZdmA"
             },
-            "title": "JLab Fit 2.0 Sport Earbuds"
-          }
-        },
-        "trustScore": 40,
-        "verdict": "trap",
-        "flags": [
-          "No verified discount"
-        ],
-        "evidence": [
-          "DICK'S Sporting Goods is not a typical electronics retailer",
-          "Price may be regular price disguised as a deal"
-        ]
-      },
-      {
-        "candidate": {
-          "title": "Tech and Go Wireless Earphones with Built-In Mic",
-          "price": "$15.27",
-          "oldPrice": null,
-          "merchant": "Home Depot",
-          "thumbnailUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRfFNmVsTnvrp77BZTtl9mDgms_nA6KDOFIL6B42_YpWBtV40Yc78vGE3JrVu6M2KeE4uDenWOQ_jQ0Rc3B2H4FJXQL71QQL0T9OnA6Y05oOaBnfZkbmpYMMA",
-          "isOnSale": false,
-          "sourceUrl": null,
-          "nimbleRaw": {
-            "entity_type": "ShoppingResult",
-            "item_link": "",
-            "position": 1,
-            "price": "$15.27",
-            "source": "Home Depot",
-            "thumbnail": {
-              "alt": "Tech and Go Wireless Earphones with Built-In Mic. ",
-              "image": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRfFNmVsTnvrp77BZTtl9mDgms_nA6KDOFIL6B42_YpWBtV40Yc78vGE3JrVu6M2KeE4uDenWOQ_jQ0Rc3B2H4FJXQL71QQL0T9OnA6Y05oOaBnfZkbmpYMMA"
-            },
-            "title": "Tech and Go Wireless Earphones with Built-In Mic"
+            "title": "Icon Wireless Earbuds with Mic"
           }
         },
         "trustScore": 20,
         "verdict": "trap",
         "flags": [
-          "No verified discount"
+          "Price $8.00 is suspiciously low"
         ],
         "evidence": [
-          "Home Depot is not a typical electronics retailer",
-          "Price may be regular price disguised as a deal"
+          "Five Below is not a typical electronics retailer",
+          "No verified reviews or ratings"
         ]
       },
       {
         "candidate": {
-          "title": "Onn. Wireless Earphones",
-          "price": "$11.83",
+          "title": "Bytech Rugged True Wireless Earbuds",
+          "price": "$8.00",
           "oldPrice": null,
-          "merchant": "Walmart",
-          "thumbnailUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQL2FaoCxCqju5EHAhgU2T8M2sWZZlacMC32YjiRHQp6QeYE4nAP4NwpOk3mTpRmpiEpkETEx3jS5cPZSOcT0_IJxUFGMC4JaKwwqSMvzkvsdPxmiP9Ll_PSQ",
+          "merchant": "Five Below",
+          "thumbnailUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQLiIAtaqaurmi_Fpbgl00sl7rtIAVLXLK9MWb3cHLVlGtNr_U_lbb17y-CpbKrWhl1kLdNIHhoYeDstTho4K7J8llI0XBSldlOsN4fRpvF9MHG_iC0BatLfg",
           "isOnSale": false,
           "sourceUrl": null,
           "nimbleRaw": {
             "entity_type": "ShoppingResult",
             "item_link": "",
             "position": 1,
-            "price": "$11.83",
-            "source": "Walmart",
+            "price": "$8.00",
+            "source": "Five Below",
             "thumbnail": {
-              "alt": "Onn. Wireless Earphones. ",
-              "image": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQL2FaoCxCqju5EHAhgU2T8M2sWZZlacMC32YjiRHQp6QeYE4nAP4NwpOk3mTpRmpiEpkETEx3jS5cPZSOcT0_IJxUFGMC4JaKwwqSMvzkvsdPxmiP9Ll_PSQ"
+              "alt": "Bytech Rugged True Wireless Earbuds. ",
+              "image": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQLiIAtaqaurmi_Fpbgl00sl7rtIAVLXLK9MWb3cHLVlGtNr_U_lbb17y-CpbKrWhl1kLdNIHhoYeDstTho4K7J8llI0XBSldlOsN4fRpvF9MHG_iC0BatLfg"
             },
-            "title": "Onn. Wireless Earphones"
+            "title": "Bytech Rugged True Wireless Earbuds"
           }
         },
-        "trustScore": 30,
+        "trustScore": 20,
         "verdict": "trap",
         "flags": [
-          "No verified discount"
+          "Price $8.00 is suspiciously low"
         ],
         "evidence": [
-          "Walmart is a Tier 1 retailer, but no discount is shown",
-          "Price may be regular price disguised as a deal"
-        ]
-      },
-      {
-        "candidate": {
-          "title": "Wireless Earbuds",
-          "price": "$2.44",
-          "oldPrice": null,
-          "merchant": "Walmart - WJyouxuan",
-          "thumbnailUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSFsFeJes1xfq622liZFgj_Ed8Ry_TEmEENTwVpunIEUw79_mopBvkCig4tp1KItajDzVkfZtYB7LnUjRBcsSAlheNuMioLitykFAQszkLVFf9VJzK1u-Wr",
-          "isOnSale": false,
-          "sourceUrl": null,
-          "nimbleRaw": {
-            "entity_type": "ShoppingResult",
-            "item_link": "",
-            "position": 1,
-            "price": "$2.44",
-            "source": "Walmart - WJyouxuan",
-            "thumbnail": {
-              "alt": "Wireless Earbuds. ",
-              "image": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSFsFeJes1xfq622liZFgj_Ed8Ry_TEmEENTwVpunIEUw79_mopBvkCig4tp1KItajDzVkfZtYB7LnUjRBcsSAlheNuMioLitykFAQszkLVFf9VJzK1u-Wr"
-            },
-            "title": "Wireless Earbuds"
-          }
-        },
-        "trustScore": 0,
-        "verdict": "trap",
-        "flags": [
-          "Price $2.44 suggests AliExpress dropship",
-          "WJyouxuan is an unknown marketplace seller"
-        ],
-        "evidence": [
-          "Walmart - WJyouxuan is not a trusted seller",
-          "Product is likely a low-quality dropship item"
-        ]
-      },
-      {
-        "candidate": {
-          "title": "Wireless Earbuds Bluetooth 5.3 Earphones 30H Playback Deep Bass Stereo Ear Buds with LED Power Display Charging Case Ipx5 Waterproof Earphones 50% off",
-          "price": "$3.34",
-          "oldPrice": null,
-          "merchant": "Walmart - WJyouxuan",
-          "thumbnailUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSRFMHQR6mlh5BjyK9euWlGL89tMfwrhDyH5MvcXR-JB1rGMIuwZLZbkQxjILL4SasqfKx7UmTiazmq6Bo32Y_kJ3KQ5fkyo_DVA_rjtwYyc6zAIKMOL4PpuQ",
-          "isOnSale": false,
-          "sourceUrl": null,
-          "nimbleRaw": {
-            "entity_type": "ShoppingResult",
-            "item_link": "",
-            "position": 1,
-            "price": "$3.34",
-            "source": "Walmart - WJyouxuan",
-            "thumbnail": {
-              "alt": "Wireless Earbuds Bluetooth 5.3 Earphones 30H Playback Deep Bass Stereo Ear Buds with LED Power Display Charging Case Ipx5 Waterproof Earphones 50% off. ",
-              "image": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSRFMHQR6mlh5BjyK9euWlGL89tMfwrhDyH5MvcXR-JB1rGMIuwZLZbkQxjILL4SasqfKx7UmTiazmq6Bo32Y_kJ3KQ5fkyo_DVA_rjtwYyc6zAIKMOL4PpuQ"
-            },
-            "title": "Wireless Earbuds Bluetooth 5.3 Earphones 30H Playback Deep Bass Stereo Ear Buds with LED Power Display Charging Case Ipx5 Waterproof Earphones 50% off"
-          }
-        },
-        "trustScore": 0,
-        "verdict": "trap",
-        "flags": [
-          "Title is keyword-stuffed spam",
-          "Price $3.34 suggests AliExpress dropship",
-          "WJyouxuan is an unknown marketplace seller"
-        ],
-        "evidence": [
-          "Walmart - WJyouxuan is not a trusted seller",
-          "Product title is overly promotional"
+          "Five Below is not a typical electronics retailer",
+          "No verified reviews or ratings"
         ]
       },
       {
@@ -400,46 +427,78 @@
             "title": "Sentry BT998 True Wireless Earhooks"
           }
         },
-        "trustScore": 60,
-        "verdict": "trap",
-        "flags": [
-          "Duplicate listing — better price available elsewhere in results"
-        ],
-        "evidence": [
-          "Menards is not a typical electronics retailer",
-          "Similar product available at Best Buy for a lower price"
-        ]
-      },
-      {
-        "candidate": {
-          "title": "TOZO T10 Wireless Earbuds",
-          "price": "$26.99",
-          "oldPrice": null,
-          "merchant": "Best Buy",
-          "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRCONspa0RhH8Que8g0h0tvwJaf_3I-do4no1GmO5mKwMWVi_W5HyWck2tss_nN-RXHDAZBgHbfcbvAqkBuG4dEZ-URjLXmwwbqrjyEj2sh",
-          "isOnSale": false,
-          "sourceUrl": null,
-          "nimbleRaw": {
-            "entity_type": "ShoppingResult",
-            "item_link": "",
-            "position": 1,
-            "price": "$26.99",
-            "source": "Best Buy",
-            "thumbnail": {
-              "alt": "TOZO T10 Wireless Earbuds. ",
-              "image": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRCONspa0RhH8Que8g0h0tvwJaf_3I-do4no1GmO5mKwMWVi_W5HyWck2tss_nN-RXHDAZBgHbfcbvAqkBuG4dEZ-URjLXmwwbqrjyEj2sh"
-            },
-            "title": "TOZO T10 Wireless Earbuds"
-          }
-        },
         "trustScore": 40,
         "verdict": "trap",
         "flags": [
           "No verified discount"
         ],
         "evidence": [
-          "Best Buy is a Tier 1 retailer, but no discount is shown",
-          "Price may be regular price disguised as a deal"
+          "Menards is not a typical electronics retailer",
+          "Price $18.99 may be the regular price"
+        ]
+      },
+      {
+        "candidate": {
+          "title": "Wireless Gear True Wireless Stereo Earbuds",
+          "price": "$10.00",
+          "oldPrice": null,
+          "merchant": "Dollar General",
+          "thumbnailUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTE9Hi6QVm_SKXyZ-jy958Wl3NNS7fJSaA-p7bGzv71ybmI9Auf-wWCpgbavxHHaEJroRXuvFxd64siFzVjnrdR0ZAYt132wL3T2EQhE6a_fInYu49_FtxG7w",
+          "isOnSale": false,
+          "sourceUrl": null,
+          "nimbleRaw": {
+            "entity_type": "ShoppingResult",
+            "item_link": "",
+            "position": 1,
+            "price": "$10.00",
+            "source": "Dollar General",
+            "thumbnail": {
+              "alt": "Wireless Gear True Wireless Stereo Earbuds. ",
+              "image": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTE9Hi6QVm_SKXyZ-jy958Wl3NNS7fJSaA-p7bGzv71ybmI9Auf-wWCpgbavxHHaEJroRXuvFxd64siFzVjnrdR0ZAYt132wL3T2EQhE6a_fInYu49_FtxG7w"
+            },
+            "title": "Wireless Gear True Wireless Stereo Earbuds"
+          }
+        },
+        "trustScore": 15,
+        "verdict": "trap",
+        "flags": [
+          "Price $10.00 is suspiciously low"
+        ],
+        "evidence": [
+          "Dollar General is not a typical electronics retailer",
+          "No verified reviews or ratings"
+        ]
+      },
+      {
+        "candidate": {
+          "title": "Wireless Gear True Wireless Earbuds",
+          "price": "$7.50",
+          "oldPrice": null,
+          "merchant": "Dollar General",
+          "thumbnailUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTu4NqHWqAzLk5B2P6P1T8oRObeb3yenoP6HypAwdlW3edDbyL3pxCCh07en9Tb7djB8utfZofwo-P7YJaK4ImfVlJt9OsAV441LUZb0PEHnXIPKzKvXzhS",
+          "isOnSale": false,
+          "sourceUrl": null,
+          "nimbleRaw": {
+            "entity_type": "ShoppingResult",
+            "item_link": "",
+            "position": 1,
+            "price": "$7.50",
+            "source": "Dollar General",
+            "thumbnail": {
+              "alt": "Wireless Gear True Wireless Earbuds. ",
+              "image": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTu4NqHWqAzLk5B2P6P1T8oRObeb3yenoP6HypAwdlW3edDbyL3pxCCh07en9Tb7djB8utfZofwo-P7YJaK4ImfVlJt9OsAV441LUZb0PEHnXIPKzKvXzhS"
+            },
+            "title": "Wireless Gear True Wireless Earbuds"
+          }
+        },
+        "trustScore": 10,
+        "verdict": "trap",
+        "flags": [
+          "Price $7.50 is suspiciously low"
+        ],
+        "evidence": [
+          "Dollar General is not a typical electronics retailer",
+          "No verified reviews or ratings"
         ]
       }
     ],
@@ -462,14 +521,33 @@
             "price": "$16.99",
             "source": "Best Buy",
             "title": "JLab Go Air Pop True Wireless Earbuds"
+          },
+          "enrichment": {
+            "realPrice": "$16.99",
+            "wasPrice": "$29.38",
+            "isPriceReduced": true,
+            "sellerName": "Walmart.com",
+            "brand": "JLab",
+            "inStock": true,
+            "averageRating": 4.5,
+            "totalReviews": 39018,
+            "reviewsWithText": 12886,
+            "recommendedPercent": 52,
+            "ratingDistribution": {
+              "stars5": 29217,
+              "stars4": 4559,
+              "stars3": 1762,
+              "stars2": 978,
+              "stars1": 2502
+            }
           }
         },
-        "trustScore": 80,
+        "trustScore": 92,
         "verdict": "trusted",
         "flags": [],
         "evidence": [
-          "Best Buy is a Tier 1 retailer with buyer protection",
-          "32% discount on JLab is consistent with their regular sale cycles"
+          "Walmart is a Tier 1 retailer with buyer protection",
+          "VERIFIED DATA: Real price $16.99 (was $29.38, genuine sale). Seller: Walmart.com (1st party). Brand: JLab. Rating: 4.5/5 from 39,018 reviews (12,886 with text, 52% recommended). Distribution: 5★ 75%, 4★ 12%, 3★ 5%, 2★ 3%, 1★ 6%."
         ]
       },
       {
@@ -492,100 +570,57 @@
             "title": "JLab GO Pop+ True Wireless Earbuds"
           }
         },
-        "trustScore": 70,
+        "trustScore": 80,
         "verdict": "trusted",
         "flags": [],
         "evidence": [
           "JLab is a known brand selling direct",
-          "20% discount is a reasonable sale price"
+          "Price $19.99 is reasonable for JLab earbuds"
         ]
       },
       {
         "candidate": {
-          "title": "JLab Go Pop ANC True Wireless Earbuds",
-          "price": "$14.99",
-          "oldPrice": "$30",
-          "merchant": "Best Buy",
+          "title": "Skullcandy Smokin' Buds XT True Wireless in-Ear Earbuds",
+          "price": "$19.88",
+          "oldPrice": null,
+          "merchant": "Walmart",
           "thumbnailUrl": null,
-          "isOnSale": true,
+          "isOnSale": false,
           "sourceUrl": null,
           "nimbleRaw": {
             "entity_type": "ShoppingResult",
-            "is_on_sale": true,
             "item_link": "",
-            "old_price": "$30",
             "position": 1,
-            "price": "$14.99",
-            "source": "Best Buy",
-            "title": "JLab Go Pop ANC True Wireless Earbuds"
+            "price": "$19.88",
+            "source": "Walmart",
+            "title": "Skullcandy Smokin' Buds XT True Wireless in-Ear Earbuds"
+          },
+          "enrichment": {
+            "realPrice": "$19.88",
+            "wasPrice": null,
+            "isPriceReduced": false,
+            "sellerName": "Walmart.com",
+            "brand": "Skullcandy",
+            "inStock": true,
+            "averageRating": 4.4,
+            "totalReviews": 9162,
+            "reviewsWithText": 2372,
+            "recommendedPercent": 76,
+            "ratingDistribution": {
+              "stars5": 6753,
+              "stars4": 994,
+              "stars3": 459,
+              "stars2": 244,
+              "stars1": 712
+            }
           }
         },
         "trustScore": 85,
         "verdict": "trusted",
         "flags": [],
         "evidence": [
-          "Best Buy is a Tier 1 retailer with buyer protection",
-          "50% discount on JLab is a significant sale"
-        ]
-      },
-      {
-        "candidate": {
-          "title": "JLab JBuds Mini True Wireless Earbuds",
-          "price": "$31.00",
-          "oldPrice": "$40",
-          "merchant": "Best Buy",
-          "thumbnailUrl": null,
-          "isOnSale": true,
-          "sourceUrl": null,
-          "nimbleRaw": {
-            "entity_type": "ShoppingResult",
-            "is_on_sale": true,
-            "item_link": "",
-            "old_price": "$40",
-            "position": 1,
-            "price": "$31.00",
-            "source": "Best Buy",
-            "title": "JLab JBuds Mini True Wireless Earbuds"
-          }
-        },
-        "trustScore": 75,
-        "verdict": "trusted",
-        "flags": [],
-        "evidence": [
-          "Best Buy is a Tier 1 retailer with buyer protection",
-          "22% discount on JLab is a reasonable sale price"
-        ]
-      },
-      {
-        "candidate": {
-          "title": "TOZO T12 Wireless Earbuds",
-          "price": "$29.99",
-          "oldPrice": "$32",
-          "merchant": "Best Buy",
-          "thumbnailUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTs1mIPAj5pi3JZP0Hst376Rp7WRgFeDoCJCbGOxu7oWDll1Hk2b1Qo_ftgwhlJLUEeqx4tmhqJwBl8K8FdqbFB_tbIjOwg8Q0QIiMgMGo",
-          "isOnSale": true,
-          "sourceUrl": null,
-          "nimbleRaw": {
-            "entity_type": "ShoppingResult",
-            "is_on_sale": true,
-            "item_link": "",
-            "old_price": "$32",
-            "position": 1,
-            "price": "$29.99",
-            "source": "Best Buy",
-            "thumbnail": {
-              "alt": "TOZO T12 Wireless Earbuds. 6% OFF. ",
-              "image": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTs1mIPAj5pi3JZP0Hst376Rp7WRgFeDoCJCbGOxu7oWDll1Hk2b1Qo_ftgwhlJLUEeqx4tmhqJwBl8K8FdqbFB_tbIjOwg8Q0QIiMgMGo"
-            },
-            "title": "TOZO T12 Wireless Earbuds"
-          }
-        },
-        "trustScore": 80,
-        "verdict": "trusted",
-        "flags": [],
-        "evidence": [
-          "Best Buy is a Tier 1 retailer with buyer protection",
-          "6% discount on TOZO is a reasonable sale price"
+          "Walmart is a Tier 1 retailer with buyer protection",
+          "VERIFIED DATA: Real price $19.88. Seller: Walmart.com (1st party). Brand: Skullcandy. Rating: 4.4/5 from 9,162 reviews (2,372 with text, 76% recommended). Distribution: 5★ 74%, 4★ 11%, 3★ 5%, 2★ 3%, 1★ 8%."
         ]
       }
     ]

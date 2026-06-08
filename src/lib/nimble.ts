@@ -6,7 +6,7 @@
  * page. Returns typed, parsed entities and strips the giant raw `html_content`
  * blob before handing anything back.
  */
-import type { DealCandidate } from "./types";
+import type { DealCandidate, EnrichedData } from "./types";
 
 const SERP_ENDPOINT = "https://api.webit.live/api/v1/realtime/serp";
 const WEB_ENDPOINT = "https://api.webit.live/api/v1/realtime/web";
@@ -204,6 +204,77 @@ export class NimbleClient {
       return null;
     } finally {
       clearTimeout(timeout);
+    }
+  }
+
+  /**
+   * Distil a raw Nimble Extract response (Walmart product shape) down to the
+   * verified fields Sift actually reasons over. Navigates
+   * `parsing.entities.Product[0]` and pulls price, seller, and review data.
+   *
+   * Returns null if the shape is missing or carries nothing useful (e.g. a 404
+   * placeholder page where price and reviews are absent/zero), so callers can
+   * simply skip enrichment for that candidate.
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  parseExtractedProduct(raw: any): EnrichedData | null {
+    try {
+      const entity = raw?.parsing?.entities?.Product?.[0];
+      if (!entity || typeof entity !== "object") return null;
+
+      const product = entity.product ?? {};
+      const reviews = entity.reviews ?? {};
+      const priceInfo = product.priceInfo ?? {};
+
+      const str = (v: unknown): string | null =>
+        typeof v === "string" && v.length > 0 ? v : null;
+      const num = (v: unknown): number | null =>
+        typeof v === "number" && !Number.isNaN(v) ? v : null;
+
+      const realPrice = str(priceInfo.currentPrice?.priceString);
+      const wasPrice = str(priceInfo.wasPrice?.priceString);
+      const isPriceReduced = priceInfo.isPriceReduced === true;
+
+      const sellerName = str(product.sellerName);
+      const brand = str(product.brand);
+      const inStock = product.availabilityStatus === "IN_STOCK";
+
+      const averageRating = num(reviews.averageOverallRating);
+      const totalReviews = num(reviews.totalReviewCount);
+      const reviewsWithText = num(reviews.reviewsWithTextCount);
+      const recommendedPercent = num(reviews.recommendedPercentage);
+
+      const hasDistribution =
+        typeof reviews.ratingValueFiveCount === "number" ||
+        typeof reviews.ratingValueOneCount === "number";
+      const ratingDistribution = hasDistribution
+        ? {
+            stars5: num(reviews.ratingValueFiveCount) ?? 0,
+            stars4: num(reviews.ratingValueFourCount) ?? 0,
+            stars3: num(reviews.ratingValueThreeCount) ?? 0,
+            stars2: num(reviews.ratingValueTwoCount) ?? 0,
+            stars1: num(reviews.ratingValueOneCount) ?? 0,
+          }
+        : null;
+
+      // Nothing useful came back (e.g. a dead/placeholder page) — skip it.
+      if (!realPrice && !averageRating && !totalReviews) return null;
+
+      return {
+        realPrice,
+        wasPrice,
+        isPriceReduced,
+        sellerName,
+        brand,
+        inStock,
+        averageRating,
+        totalReviews,
+        reviewsWithText,
+        recommendedPercent,
+        ratingDistribution,
+      };
+    } catch {
+      return null;
     }
   }
 }

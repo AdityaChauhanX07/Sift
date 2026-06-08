@@ -19,7 +19,7 @@ function priceValue(value: string): number {
  * candidate — the one with the lowest parseable price. Prevents the same
  * product surfacing as multiple trusted results.
  */
-function dedupeByTitle(candidates: DealCandidate[]): DealCandidate[] {
+export function dedupeByTitle(candidates: DealCandidate[]): DealCandidate[] {
   const byTitle = new Map<string, DealCandidate>();
   for (const candidate of candidates) {
     const key = candidate.title.trim().toLowerCase();
