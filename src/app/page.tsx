@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+/* ----------------------------- types ----------------------------- */
 
 interface DealCandidate {
   title: string;
@@ -27,19 +29,71 @@ interface SiftResult {
   trusted: InvestigationResult[];
 }
 
+type Phase = "hero" | "loading" | "reveal" | "error";
+
+/* --------------------------- investigation stages --------------------------- */
+
+const STAGES = [
+  "Searching the web",
+  "Scanning shopping results",
+  "Investigating each deal",
+  "Cross-referencing prices",
+  "Checking merchant trust",
+  "Exposing the fakes",
+] as const;
+
+const STAGE_MS = 720;
+
+/* ------------------------------- helpers ------------------------------- */
+
+function parsePrice(value: string | null | undefined): number | null {
+  if (!value) return null;
+  const match = value.replace(/,/g, "").match(/(\d+(\.\d+)?)/);
+  return match ? parseFloat(match[1]) : null;
+}
+
+function savingsPercent(price: string, oldPrice: string | null): number | null {
+  const now = parsePrice(price);
+  const was = parsePrice(oldPrice);
+  if (now === null || was === null || was <= now) return null;
+  return Math.round(((was - now) / was) * 100);
+}
+
+/* ================================ page ================================ */
+
 export default function Home() {
   const [query, setQuery] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [phase, setPhase] = useState<Phase>("hero");
+  const [stage, setStage] = useState(0);
   const [result, setResult] = useState<SiftResult | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  // Advance the fake investigation stages while the real request runs.
+  useEffect(() => {
+    if (phase !== "loading") return;
+    const id = setInterval(() => {
+      setStage((s) => (s < STAGES.length - 1 ? s + 1 : s));
+    }, STAGE_MS);
+    return () => clearInterval(id);
+  }, [phase]);
+
+  // Reveal only once BOTH the staged animation has completed and data arrived.
+  useEffect(() => {
+    if (phase !== "loading") return;
+    if (result && stage >= STAGES.length - 1) {
+      const id = setTimeout(() => setPhase("reveal"), 450);
+      return () => clearTimeout(id);
+    }
+  }, [phase, result, stage]);
 
   async function siftIt() {
     const q = query.trim();
-    if (!q || loading) return;
+    if (!q || phase === "loading") return;
 
-    setLoading(true);
-    setError(null);
+    setPhase("loading");
+    setStage(0);
     setResult(null);
+    setError(null);
 
     try {
       const res = await fetch("/api/sift", {
@@ -54,187 +108,457 @@ export default function Home() {
       setResult(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
-    } finally {
-      setLoading(false);
+      setPhase("error");
     }
   }
 
+  function reset() {
+    setPhase("hero");
+    setResult(null);
+    setError(null);
+    setStage(0);
+  }
+
   return (
-    <main className="min-h-screen bg-zinc-950 text-zinc-100 font-mono">
-      <div className="mx-auto max-w-3xl px-6 py-16">
-        <header className="mb-8">
-          <h1 className="text-2xl font-bold tracking-tight">
-            sift<span className="text-emerald-400">_</span>
-          </h1>
-          <p className="mt-1 text-sm text-zinc-500">
-            deal trust agent — separating real deals from traps
-          </p>
-        </header>
+    <main className="relative min-h-screen overflow-hidden bg-zinc-950 text-zinc-100">
+      {/* ambient backdrop */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(16,185,129,0.08),transparent_55%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:44px_44px]" />
 
-        <div className="flex gap-2">
-          <input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && siftIt()}
-            placeholder="wireless earbuds under $50"
-            className="flex-1 rounded border border-zinc-800 bg-zinc-900 px-3 py-2 text-sm text-zinc-100 placeholder-zinc-600 outline-none focus:border-emerald-500"
+      <div className="relative mx-auto max-w-6xl px-6">
+        {phase === "hero" && (
+          <Hero
+            query={query}
+            setQuery={setQuery}
+            onSubmit={siftIt}
           />
-          <button
-            onClick={siftIt}
-            disabled={loading || !query.trim()}
-            className="rounded bg-emerald-600 px-4 py-2 text-sm font-semibold text-zinc-950 transition hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-40"
-          >
-            {loading ? "investigating…" : "Sift it"}
-          </button>
-        </div>
-
-        {error && (
-          <div className="mt-6 rounded border border-red-900 bg-red-950/50 px-3 py-2 text-sm text-red-300">
-            {error}
-          </div>
         )}
 
-        {result && <Results result={result} />}
+        {phase === "loading" && (
+          <LoadingPanel stage={stage} candidateCount={result?.totalChecked} />
+        )}
+
+        {phase === "error" && <ErrorPanel error={error} onRetry={reset} />}
+
+        {phase === "reveal" && result && (
+          <Reveal result={result} onReset={reset} />
+        )}
       </div>
     </main>
   );
 }
 
-function Results({ result }: { result: SiftResult }) {
-  const { totalChecked, traps, trusted } = result;
+/* ================================ hero ================================ */
 
-  if (totalChecked === 0) {
-    return (
-      <p className="mt-10 text-sm text-zinc-500">
-        No shopping deals found for “{result.query}”. Try a different query.
-      </p>
-    );
-  }
-
+function Hero({
+  query,
+  setQuery,
+  onSubmit,
+}: {
+  query: string;
+  setQuery: (v: string) => void;
+  onSubmit: () => void;
+}) {
   return (
-    <>
-      <div className="mt-10 border-y border-zinc-800 py-6 text-lg leading-relaxed">
-        Checked <span className="font-bold text-zinc-100">{totalChecked}</span>{" "}
-        deals.{" "}
-        <span className="font-bold text-red-400">{traps.length}</span>{" "}
-        {traps.length === 1 ? "is a trap" : "are traps"}.{" "}
-        <span className="font-bold text-emerald-400">{trusted.length}</span> you
-        can trust.
+    <section className="flex min-h-screen flex-col items-center justify-center py-20 text-center">
+      <div className="animate-fade-in-up">
+        <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/60 px-3 py-1 font-mono text-[11px] uppercase tracking-widest text-zinc-400">
+          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse-dot" />
+          onlythebest.deals
+        </div>
+
+        <h1 className="text-6xl font-extrabold tracking-tight sm:text-8xl">
+          Sift<span className="text-emerald-400">.</span>
+        </h1>
+
+        <p className="mx-auto mt-5 max-w-xl text-balance text-lg text-zinc-400 sm:text-xl">
+          We don&apos;t find deals.{" "}
+          <span className="font-semibold text-zinc-100">
+            We kill the fake ones.
+          </span>
+        </p>
       </div>
 
-      {traps.length > 0 && (
-        <Section
-          label="Traps"
-          accent="red"
-          count={traps.length}
-          results={traps}
-        />
-      )}
-      {trusted.length > 0 && (
-        <Section
-          label="Trusted"
-          accent="emerald"
-          count={trusted.length}
-          results={trusted}
-        />
-      )}
-    </>
-  );
-}
-
-function Section({
-  label,
-  accent,
-  count,
-  results,
-}: {
-  label: string;
-  accent: "red" | "emerald";
-  count: number;
-  results: InvestigationResult[];
-}) {
-  const headColor = accent === "red" ? "text-red-400" : "text-emerald-400";
-  return (
-    <section className="mt-10">
-      <h2 className={`mb-4 text-sm font-bold uppercase tracking-widest ${headColor}`}>
-        {label} ({count})
-      </h2>
-      <div className="space-y-3">
-        {results.map((r, i) => (
-          <DealCard key={i} result={r} accent={accent} />
-        ))}
+      <div className="mt-10 w-full max-w-xl animate-fade-in-up anim-delay-200 opacity-0">
+        <div className="flex items-center gap-2 rounded-xl border border-zinc-800 bg-zinc-900/80 p-2 shadow-2xl shadow-emerald-500/5 backdrop-blur transition focus-within:border-emerald-500/60">
+          <input
+            autoFocus
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && onSubmit()}
+            placeholder="What are you looking for?"
+            className="flex-1 bg-transparent px-4 py-3 text-base text-zinc-100 placeholder-zinc-600 outline-none"
+          />
+          <button
+            onClick={onSubmit}
+            disabled={!query.trim()}
+            className="rounded-lg bg-emerald-500 px-6 py-3 text-sm font-bold text-zinc-950 transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            Sift it
+          </button>
+        </div>
+        <p className="mt-4 font-mono text-xs text-zinc-600">
+          so only the real ones remain.
+        </p>
       </div>
     </section>
   );
 }
 
-function DealCard({
-  result,
-  accent,
-}: {
-  result: InvestigationResult;
-  accent: "red" | "emerald";
-}) {
-  const { candidate, trustScore, flags, evidence, verdict } = result;
-  const isTrap = accent === "red";
+/* ============================== loading ============================== */
 
-  const border = isTrap ? "border-red-900/60" : "border-emerald-900/60";
-  const bg = isTrap ? "bg-red-950/20" : "bg-emerald-950/20";
-  const scoreColor = isTrap ? "text-red-400" : "text-emerald-400";
-  const titleClass = isTrap
-    ? "text-zinc-400 line-through decoration-red-700"
-    : "text-zinc-100";
+function LoadingPanel({
+  stage,
+  candidateCount,
+}: {
+  stage: number;
+  candidateCount?: number;
+}) {
+  return (
+    <section className="flex min-h-screen flex-col items-center justify-center py-20">
+      <div className="w-full max-w-md">
+        <div className="mb-8 flex items-center gap-3">
+          <span className="relative flex h-3 w-3">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+            <span className="relative inline-flex h-3 w-3 rounded-full bg-emerald-500" />
+          </span>
+          <span className="font-mono text-xs uppercase tracking-[0.25em] text-emerald-400">
+            Investigation live
+          </span>
+        </div>
+
+        {/* scan frame */}
+        <div className="relative mb-8 h-1 overflow-hidden rounded-full bg-zinc-900">
+          <div className="absolute inset-y-0 left-0 w-1/3 animate-scan-line rounded-full bg-gradient-to-r from-transparent via-emerald-500 to-transparent" />
+        </div>
+
+        <ul className="space-y-3 font-mono text-sm">
+          {STAGES.map((label, i) => {
+            const done = i < stage;
+            const active = i === stage;
+            const text =
+              i === 1 && candidateCount !== undefined
+                ? `Found ${candidateCount} candidates`
+                : label;
+            return (
+              <li
+                key={label}
+                className={`flex items-center gap-3 transition-colors duration-300 ${
+                  done
+                    ? "text-zinc-500"
+                    : active
+                      ? "text-zinc-100"
+                      : "text-zinc-700"
+                }`}
+              >
+                <span
+                  className={`flex h-4 w-4 items-center justify-center rounded-full border text-[10px] ${
+                    done
+                      ? "border-emerald-600 bg-emerald-600/20 text-emerald-400"
+                      : active
+                        ? "border-emerald-500 text-emerald-400"
+                        : "border-zinc-800 text-transparent"
+                  }`}
+                >
+                  {done ? "✓" : active ? "" : ""}
+                  {active && (
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse-dot" />
+                  )}
+                </span>
+                <span>
+                  {text}
+                  {active && <Ellipsis />}
+                </span>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+function Ellipsis() {
+  const [dots, setDots] = useState("");
+  useEffect(() => {
+    const id = setInterval(
+      () => setDots((d) => (d.length >= 3 ? "" : d + ".")),
+      300,
+    );
+    return () => clearInterval(id);
+  }, []);
+  return <span className="text-emerald-400">{dots}</span>;
+}
+
+/* =============================== error =============================== */
+
+function ErrorPanel({
+  error,
+  onRetry,
+}: {
+  error: string | null;
+  onRetry: () => void;
+}) {
+  return (
+    <section className="flex min-h-screen flex-col items-center justify-center py-20 text-center">
+      <div className="max-w-md animate-fade-in-up rounded-xl border border-red-900/60 bg-red-950/20 p-8">
+        <div className="font-mono text-xs uppercase tracking-widest text-red-400">
+          Investigation failed
+        </div>
+        <p className="mt-3 text-sm text-zinc-300">
+          {error ?? "Something went wrong."}
+        </p>
+        <button
+          onClick={onRetry}
+          className="mt-6 rounded-lg border border-zinc-700 px-5 py-2 text-sm font-semibold text-zinc-200 transition hover:border-zinc-500 hover:bg-zinc-900"
+        >
+          Try again
+        </button>
+      </div>
+    </section>
+  );
+}
+
+/* ============================== reveal ============================== */
+
+function Reveal({
+  result,
+  onReset,
+}: {
+  result: SiftResult;
+  onReset: () => void;
+}) {
+  const { totalChecked, traps, trusted } = result;
 
   return (
-    <article className={`rounded border ${border} ${bg} p-4`}>
-      <div className="flex items-start justify-between gap-4">
-        <h3 className={`text-sm font-semibold ${titleClass}`}>
-          {candidate.title}
-        </h3>
-        <div className="shrink-0 text-right">
-          <div className={`text-lg font-bold ${scoreColor}`}>{trustScore}</div>
-          <div className="text-[10px] uppercase tracking-wider text-zinc-600">
-            trust
+    <section className="py-16 sm:py-24">
+      {/* shock line */}
+      <header className="animate-fade-in-up text-center">
+        <div className="font-mono text-xs uppercase tracking-[0.3em] text-zinc-500">
+          Investigation complete — “{result.query}”
+        </div>
+        <h2 className="mt-5 text-4xl font-extrabold leading-tight tracking-tight sm:text-6xl">
+          Checked {totalChecked} deals.
+          <br />
+          <span className="text-red-500">{traps.length} are traps.</span>
+        </h2>
+        <p className="mt-4 text-xl text-zinc-400 sm:text-2xl">
+          <span className="font-bold text-emerald-400">{trusted.length}</span>{" "}
+          you can trust.
+        </p>
+      </header>
+
+      {totalChecked === 0 && (
+        <p className="mt-12 text-center font-mono text-sm text-zinc-500">
+          No shopping deals surfaced for that search. Try another query.
+        </p>
+      )}
+
+      {/* the trap wall */}
+      {traps.length > 0 && (
+        <div className="mt-16">
+          <SectionLabel
+            color="red"
+            title="The trap wall"
+            subtitle={`${traps.length} deals we rejected`}
+          />
+          <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {traps.map((r, i) => (
+              <TrapCard key={i} result={r} index={i} />
+            ))}
           </div>
+        </div>
+      )}
+
+      {/* the trusted shortlist */}
+      {trusted.length > 0 && (
+        <div className="mt-20 animate-slide-up opacity-0" style={{ animationDelay: "250ms" }}>
+          <SectionLabel
+            color="emerald"
+            title="The trusted shortlist"
+            subtitle={`${trusted.length} that survived`}
+          />
+          <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
+            {trusted.map((r, i) => (
+              <TrustedCard key={i} result={r} index={i} />
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div className="mt-20 flex justify-center">
+        <button
+          onClick={onReset}
+          className="rounded-lg border border-zinc-700 bg-zinc-900/60 px-6 py-3 text-sm font-semibold text-zinc-200 transition hover:border-emerald-500/60 hover:text-emerald-300"
+        >
+          ↺ Search again
+        </button>
+      </div>
+
+      <p className="mt-10 text-center font-mono text-xs text-zinc-700">
+        onlythebest.deals — curation by exclusion
+      </p>
+    </section>
+  );
+}
+
+function SectionLabel({
+  color,
+  title,
+  subtitle,
+}: {
+  color: "red" | "emerald";
+  title: string;
+  subtitle: string;
+}) {
+  const dot = color === "red" ? "bg-red-500" : "bg-emerald-500";
+  const text = color === "red" ? "text-red-400" : "text-emerald-400";
+  return (
+    <div className="flex items-baseline gap-3 border-b border-zinc-800 pb-3">
+      <span className={`h-2 w-2 rounded-full ${dot}`} />
+      <h3 className={`text-sm font-bold uppercase tracking-widest ${text}`}>
+        {title}
+      </h3>
+      <span className="font-mono text-xs text-zinc-600">{subtitle}</span>
+    </div>
+  );
+}
+
+/* ------------------------------ trap card ------------------------------ */
+
+function TrapCard({
+  result,
+  index,
+}: {
+  result: InvestigationResult;
+  index: number;
+}) {
+  const { candidate, flags, evidence } = result;
+  return (
+    <article
+      className="group relative animate-fade-in-up overflow-hidden rounded-lg border border-zinc-800/80 bg-zinc-900/40 p-4 opacity-0 grayscale transition-all duration-300 hover:z-10 hover:-translate-y-0.5 hover:grayscale-0"
+      style={{ animationDelay: `${Math.min(index, 14) * 45}ms` }}
+    >
+      {/* TRAP stamp */}
+      <div className="pointer-events-none absolute right-3 top-3 z-10 animate-stamp-in rounded border-2 border-red-600/80 px-2 py-0.5 font-mono text-[11px] font-black uppercase tracking-widest text-red-500/90">
+        Trap
+      </div>
+
+      <h4 className="max-w-[78%] text-sm font-semibold text-zinc-500 line-through decoration-red-700/70">
+        {candidate.title}
+      </h4>
+
+      <div className="mt-2 flex items-center gap-2 font-mono text-xs text-zinc-600">
+        <span className="text-zinc-400">{candidate.price || "—"}</span>
+        {candidate.oldPrice && (
+          <span className="text-zinc-700 line-through">{candidate.oldPrice}</span>
+        )}
+        <span>·</span>
+        <span>{candidate.merchant || "unknown"}</span>
+      </div>
+
+      {/* hover reveal: flags + evidence */}
+      <div className="grid grid-rows-[0fr] transition-all duration-300 ease-out group-hover:grid-rows-[1fr] group-hover:pt-3">
+        <div className="overflow-hidden">
+          {flags.length > 0 && (
+            <ul className="flex flex-wrap gap-1.5">
+              {flags.map((flag, i) => (
+                <li
+                  key={i}
+                  className="rounded border border-red-900/60 bg-red-950/40 px-1.5 py-0.5 font-mono text-[10px] text-red-400"
+                >
+                  ⚑ {flag}
+                </li>
+              ))}
+            </ul>
+          )}
+          {evidence.length > 0 && (
+            <ul className="mt-2 space-y-1">
+              {evidence.map((e, i) => (
+                <li
+                  key={i}
+                  className="flex gap-1.5 text-[11px] leading-snug text-red-300/70"
+                >
+                  <span className="text-red-700">›</span>
+                  <span>{e}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
+    </article>
+  );
+}
+
+/* ----------------------------- trusted card ----------------------------- */
+
+function TrustedCard({
+  result,
+  index,
+}: {
+  result: InvestigationResult;
+  index: number;
+}) {
+  const { candidate, trustScore, evidence } = result;
+  const savings = savingsPercent(candidate.price, candidate.oldPrice);
+
+  return (
+    <article
+      className="group relative animate-fade-in-up overflow-hidden rounded-xl border border-emerald-900/50 bg-gradient-to-b from-emerald-950/30 to-zinc-900/60 p-5 opacity-0 shadow-lg shadow-emerald-500/5 transition hover:border-emerald-700/60 hover:shadow-emerald-500/10"
+      style={{ animationDelay: `${index * 70}ms` }}
+    >
+      <div className="absolute inset-y-0 left-0 w-1 bg-emerald-500/80" />
+
+      <div className="flex items-start justify-between gap-4 pl-2">
+        <h4 className="text-base font-semibold text-zinc-50">
+          {candidate.title}
+        </h4>
+        {savings !== null && (
+          <span className="shrink-0 rounded-full bg-emerald-500/15 px-2 py-0.5 font-mono text-[11px] font-bold text-emerald-400">
+            −{savings}%
+          </span>
+        )}
+      </div>
+
+      <div className="mt-3 flex items-center gap-3 pl-2 font-mono">
+        <span className="text-xl font-bold text-emerald-400">
+          {candidate.price || "—"}
+        </span>
+        {candidate.oldPrice && (
+          <span className="text-sm text-zinc-600 line-through">
+            {candidate.oldPrice}
+          </span>
+        )}
+      </div>
+
+      <div className="mt-2 flex items-center gap-1.5 pl-2 text-xs text-zinc-400">
+        <span className="text-emerald-400">✓</span>
+        <span>{candidate.merchant || "verified merchant"}</span>
+      </div>
+
+      {/* trust score bar */}
+      <div className="mt-4 pl-2">
+        <div className="mb-1 flex items-center justify-between font-mono text-[10px] uppercase tracking-wider text-zinc-500">
+          <span>Trust score</span>
+          <span className="text-emerald-400">{trustScore}/100</span>
+        </div>
+        <div className="h-1.5 overflow-hidden rounded-full bg-zinc-800">
+          <div
+            className="h-full rounded-full bg-gradient-to-r from-emerald-600 to-emerald-400"
+            style={{ width: `${trustScore}%` }}
+          />
         </div>
       </div>
 
-      <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-zinc-400">
-        <span className="font-bold text-zinc-200">{candidate.price}</span>
-        {candidate.oldPrice && (
-          <span className="text-zinc-600 line-through">{candidate.oldPrice}</span>
-        )}
-        <span>·</span>
-        <span>{candidate.merchant || "unknown merchant"}</span>
-        <span
-          className={`ml-auto rounded px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
-            isTrap
-              ? "bg-red-900/50 text-red-300"
-              : "bg-emerald-900/50 text-emerald-300"
-          }`}
-        >
-          {verdict}
-        </span>
-      </div>
-
-      {flags.length > 0 && (
-        <ul className="mt-3 flex flex-wrap gap-1.5">
-          {flags.map((flag, i) => (
+      {evidence.length > 0 && (
+        <ul className="mt-4 space-y-1.5 pl-2">
+          {evidence.map((e, i) => (
             <li
               key={i}
-              className="rounded border border-red-900/60 bg-red-950/40 px-2 py-0.5 text-[11px] text-red-300"
+              className="flex gap-2 text-xs leading-snug text-zinc-400"
             >
-              ⚑ {flag}
-            </li>
-          ))}
-        </ul>
-      )}
-
-      {evidence.length > 0 && (
-        <ul className="mt-3 space-y-1 text-xs text-zinc-500">
-          {evidence.map((e, i) => (
-            <li key={i} className="flex gap-2">
-              <span className="text-zinc-700">&gt;</span>
+              <span className="text-emerald-500">•</span>
               <span>{e}</span>
             </li>
           ))}
