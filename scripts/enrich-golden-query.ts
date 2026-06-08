@@ -63,7 +63,9 @@ async function main() {
   // Import after env is loaded so clients see their credentials.
   const { NimbleClient, toDealCandidate } = await import("../src/lib/nimble");
   const { GroqInvestigator } = await import("../src/lib/groq");
-  const { dedupeByTitle } = await import("../src/lib/investigator");
+  const { dedupeByTitle, attachSourceMatches } = await import(
+    "../src/lib/investigator"
+  );
   const { setCachedResult } = await import("../src/lib/cache");
 
   const nimble = new NimbleClient();
@@ -116,6 +118,21 @@ async function main() {
       console.log("  → no matching candidate; injected a synthetic one");
     }
     enriched++;
+  }
+
+  // Same AliExpress source-lookup step the live pipeline runs, so the cached
+  // golden result carries real dropship/markup evidence too.
+  console.log("\nRunning AliExpress source lookup on suspicious candidates...");
+  await attachSourceMatches(nimble, candidates);
+  const matched = candidates.filter((c) => c.sourceMatch);
+  console.log(`  ${matched.length} candidate(s) matched to an AliExpress source.`);
+  for (const c of matched) {
+    const s = c.sourceMatch!;
+    const priceStr =
+      s.aliExpressPrice !== null
+        ? `$${s.aliExpressPrice.toFixed(2)}${s.markup !== null ? ` (${s.markup}x)` : ""}`
+        : "no price";
+    console.log(`    • ${c.title}\n        → ${priceStr} — ${s.aliExpressUrl}`);
   }
 
   console.log(`\nEnriched ${enriched} candidate(s). Re-running Groq investigation...`);

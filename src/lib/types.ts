@@ -50,6 +50,16 @@ export interface DealCandidate {
   sourceUrl: string | null;
   /** Verified data from direct product-page extraction, when available. */
   enrichment?: EnrichedData;
+  /**
+   * The same/similar product located at its AliExpress source, when found —
+   * evidence of dropship markup. `markup` is a multiplier (9.2 = 9.2x).
+   */
+  sourceMatch?: {
+    aliExpressTitle: string;
+    aliExpressPrice: number | null;
+    aliExpressUrl: string;
+    markup: number | null;
+  };
   /** The raw Nimble entity this candidate was derived from. */
   nimbleRaw: unknown;
 }

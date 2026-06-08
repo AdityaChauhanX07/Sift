@@ -14,6 +14,15 @@ const WEB_ENDPOINT = "https://api.webit.live/api/v1/realtime/web";
 /** Per-call timeout for an Extract request, in milliseconds. */
 const EXTRACT_TIMEOUT_MS = 15_000;
 
+/** Per-call timeout for an AliExpress source-lookup SERP request, in ms. */
+const ALIEXPRESS_TIMEOUT_MS = 15_000;
+
+/** Pull the first "$X.XX" price out of a snippet, if any. */
+function priceFromSnippet(snippet: string): string | undefined {
+  const match = snippet.match(/\$\s?\d{1,4}(?:,\d{3})*(?:\.\d{1,2})?/);
+  return match ? match[0].replace(/\s/g, "") : undefined;
+}
+
 /**
  * A parsed Google Shopping result, as it appears under
  * `parsing.entities.ShoppingResult[]` in the Nimble SERP response.
@@ -52,6 +61,18 @@ export interface OrganicResult {
 export interface SearchDealsResult {
   shopping: ShoppingResult[];
   organic: OrganicResult[];
+}
+
+/**
+ * A candidate AliExpress source listing, distilled from an organic Google result
+ * that points at aliexpress.com. `price` is the raw "$X.XX" string scraped from
+ * the snippet when present — callers parse it into a number for markup math.
+ */
+export interface AliExpressResult {
+  title: string;
+  url: string;
+  snippet: string;
+  price?: string;
 }
 
 /**
@@ -151,6 +172,72 @@ export class NimbleClient {
       shopping: entities.ShoppingResult ?? [],
       organic: entities.OrganicResult ?? [],
     };
+  }
+
+  /**
+   * Find the AliExpress source listing(s) for a product by running a
+   * `site:aliexpress.com` SERP query for its title. Used to surface dropship
+   * markup: a $24 earbud whose source sells for $3 is a 8x markup.
+   *
+   * Best-effort like Extract: it never throws. On a timeout (15s), transport
+   * error, non-JSON body, or non-success response it returns an empty array so
+   * the investigation pipeline degrades gracefully. Only organic results whose
+   * URL is on aliexpress.com are returned; prices are scraped from the snippet
+   * when present.
+   */
+  async searchAliExpress(productTitle: string): Promise<AliExpressResult[]> {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), ALIEXPRESS_TIMEOUT_MS);
+
+    try {
+      const res = await fetch(SERP_ENDPOINT, {
+        method: "POST",
+        headers: {
+          Authorization: this.authHeader,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          parse: true,
+          query: `${productTitle} site:aliexpress.com`,
+          search_engine: "google_search",
+          country: "US",
+          locale: "en",
+        }),
+        signal: controller.signal,
+      });
+
+      const text = await res.text();
+
+      let json: NimbleSerpResponse;
+      try {
+        json = JSON.parse(text);
+      } catch {
+        return [];
+      }
+
+      // Never let the giant raw HTML escape this client.
+      delete json.html_content;
+
+      if (!res.ok || json.status === "failed") return [];
+
+      const organic = json.parsing?.entities?.OrganicResult ?? [];
+      return organic
+        .filter((o) => /aliexpress\.com/i.test(o.url ?? ""))
+        .map((o) => {
+          const snippet = o.snippet ?? "";
+          return {
+            title: o.title,
+            url: o.url,
+            snippet,
+            price: priceFromSnippet(snippet),
+          };
+        });
+    } catch {
+      // Timeout (abort) or transport error — degrade to an empty list.
+      return [];
+    } finally {
+      clearTimeout(timeout);
+    }
   }
 
   /**

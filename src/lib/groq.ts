@@ -20,6 +20,8 @@ const SYSTEM_PROMPT = `You are Sift, a ruthless deal investigator. You analyze s
 
 Some candidates include VERIFIED DATA from direct product page extraction (real price, seller, and review distribution). Weight this heavily — it's real, not inferred. Prefer it over surface signals like the title or SERP price, and cite the specific numbers (price, review count, % recommended) in your evidence.
 
+Some candidates include SOURCE MATCH data showing the same product found on AliExpress. If a SOURCE MATCH exists but has no price, the match alone is strong evidence of dropshipping. Flag it: "Same product found on AliExpress — likely dropshipped from wholesale source." If a SOURCE MATCH has a price, cite the exact markup. Example flag: "Same item on AliExpress for $3.50 — 7x markup".
+
 ANALYSIS FRAMEWORK for each deal:
 1. MERCHANT TRUST: Tier 1 (Amazon, Best Buy, Walmart, Target, Costco) = baseline trust. Tier 2 (known brands selling direct like JLab, Skullcandy, Soundcore via their own site) = moderate trust. Tier 3 (unknown merchants, marketplace sellers like "WJyouxuan", random resellers) = low trust.
 2. PRICE RED FLAGS: Items under $5 for electronics = almost certainly dropship junk from AliExpress. "Was $X, now $Y" where the discount is over 60% = likely inflated original price. Multiple sellers listing the exact same product at wildly different prices = arbitrage/dropship.
@@ -163,6 +165,20 @@ function formatEnrichment(e: EnrichedData): string {
   return `VERIFIED DATA: ${parts.join(" ")}`;
 }
 
+/**
+ * Render an AliExpress source match as one line for the LLM prompt. With a price
+ * we quote the markup; without one, the title + URL match alone is the evidence.
+ */
+function formatSourceMatch(s: NonNullable<DealCandidate["sourceMatch"]>): string {
+  if (s.aliExpressPrice !== null) {
+    const markup = s.markup !== null ? ` — ${s.markup}x markup` : "";
+    return `SOURCE MATCH: Found on AliExpress as '${s.aliExpressTitle}' for $${s.aliExpressPrice.toFixed(
+      2,
+    )}${markup}. URL: ${s.aliExpressUrl}`;
+  }
+  return `SOURCE MATCH: Same/similar product found on AliExpress as '${s.aliExpressTitle}'. Likely dropshipped. URL: ${s.aliExpressUrl}`;
+}
+
 export class GroqInvestigator {
   private readonly client: Groq;
 
@@ -197,6 +213,8 @@ export class GroqInvestigator {
       // Real on-page data, when we extracted it — JSON.stringify drops this key
       // for un-enriched candidates.
       verified_data: c.enrichment ? formatEnrichment(c.enrichment) : undefined,
+      // AliExpress source/markup, when we found it — same drop-when-undefined.
+      source_match: c.sourceMatch ? formatSourceMatch(c.sourceMatch) : undefined,
     }));
 
     // Organic results aren't candidates — feed them as supporting context so the
