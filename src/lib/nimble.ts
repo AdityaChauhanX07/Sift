@@ -17,6 +17,23 @@ const EXTRACT_TIMEOUT_MS = 15_000;
 /** Per-call timeout for an AliExpress source-lookup SERP request, in ms. */
 const ALIEXPRESS_TIMEOUT_MS = 15_000;
 
+/** Per-call timeout for a product-URL lookup SERP request, in ms. */
+const FIND_URL_TIMEOUT_MS = 15_000;
+
+/**
+ * Retailers whose product pages we can find + extract, with the URL path that
+ * marks a real product page (vs. a search/category page) on that domain.
+ */
+const EXTRACTABLE_RETAILERS: {
+  match: RegExp;
+  domain: string;
+  productPath: string;
+}[] = [
+  { match: /walmart/i, domain: "walmart.com", productPath: "/ip/" },
+  { match: /best ?buy/i, domain: "bestbuy.com", productPath: "/site/" },
+  { match: /target/i, domain: "target.com", productPath: "/p/" },
+];
+
 /** Pull the first "$X.XX" price out of a snippet, if any. */
 function priceFromSnippet(snippet: string): string | undefined {
   const match = snippet.match(/\$\s?\d{1,4}(?:,\d{3})*(?:\.\d{1,2})?/);
@@ -235,6 +252,69 @@ export class NimbleClient {
     } catch {
       // Timeout (abort) or transport error — degrade to an empty list.
       return [];
+    } finally {
+      clearTimeout(timeout);
+    }
+  }
+
+  /**
+   * Find the product-page URL for a candidate via a `site:<retailer>` SERP
+   * query. SERP shopping results rarely carry a usable item_link, so we search
+   * the retailer's own domain and pick the first organic result that looks like
+   * a real product page (e.g. /ip/ on Walmart) rather than a search/category
+   * page. That URL is what extractProductPage then enriches.
+   *
+   * Returns null when the retailer isn't one we can extract, or when nothing
+   * usable comes back. Best-effort: never throws (15s timeout → null).
+   */
+  async findProductUrl(title: string, retailer: string): Promise<string | null> {
+    const entry = EXTRACTABLE_RETAILERS.find((r) => r.match.test(retailer));
+    if (!entry) return null;
+
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), FIND_URL_TIMEOUT_MS);
+
+    try {
+      const res = await fetch(SERP_ENDPOINT, {
+        method: "POST",
+        headers: {
+          Authorization: this.authHeader,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          parse: true,
+          query: `${title} site:${entry.domain}`,
+          search_engine: "google_search",
+          country: "US",
+          locale: "en",
+        }),
+        signal: controller.signal,
+      });
+
+      const text = await res.text();
+
+      let json: NimbleSerpResponse;
+      try {
+        json = JSON.parse(text);
+      } catch {
+        return null;
+      }
+
+      // Never let the giant raw HTML escape this client.
+      delete json.html_content;
+
+      if (!res.ok || json.status === "failed") return null;
+
+      const organic = json.parsing?.entities?.OrganicResult ?? [];
+      const match = organic.find((o) => {
+        const url = o.url ?? "";
+        return url.includes(entry.domain) && url.includes(entry.productPath);
+      });
+
+      return match?.url ?? null;
+    } catch {
+      // Timeout (abort) or transport error — degrade to null.
+      return null;
     } finally {
       clearTimeout(timeout);
     }

@@ -28,6 +28,27 @@ function parsePrice(value: string | null | undefined): number | null {
 /** Max suspicious candidates we'll run an AliExpress lookup for — caps spend. */
 const MAX_SOURCE_LOOKUPS = 5;
 
+/** Max product-page Extracts we'll run per query — caps spend. */
+const MAX_EXTRACTS = 3;
+
+/**
+ * Retailers we actually enrich live. findProductUrl can locate Best Buy and
+ * Target product pages too, but parseExtractedProduct only understands Walmart's
+ * response shape — Best Buy/Target Extracts come back as schema.org Product/
+ * Review entities it can't read (verified live: they parse to null). Targeting
+ * Walmart only keeps the 3-Extract budget on candidates that actually yield
+ * data instead of wasting it on guaranteed nulls.
+ */
+const EXTRACTABLE_RETAILER = /walmart/i;
+
+/** A clean display name for a retailer string, for progress messages. */
+function prettyRetailer(merchant: string): string {
+  if (/walmart/i.test(merchant)) return "Walmart";
+  if (/best ?buy/i.test(merchant)) return "Best Buy";
+  if (/target/i.test(merchant)) return "Target";
+  return merchant.trim() || "the retailer";
+}
+
 /** Retailers whose own listings we trust enough to skip a source lookup. */
 const KNOWN_RETAILER =
   /amazon|walmart|best ?buy|target|costco|jlab|skullcandy|soundcore|anker|samsung|sony|bose|apple/i;
@@ -130,6 +151,56 @@ export async function attachSourceMatches(
 }
 
 /**
+ * For up to MAX_EXTRACTS candidates from extractable retailers (Walmart, Best
+ * Buy, Target) that aren't already enriched, find the product-page URL and pull
+ * real on-page data (price, seller, reviews) via Nimble Extract. Mutates the
+ * candidates in place. Runs in parallel and never throws — find/extract already
+ * degrade to null. This is what gives LIVE queries verified data, not just the
+ * cached golden query.
+ */
+export async function attachEnrichment(
+  nimble: NimbleClient,
+  candidates: DealCandidate[],
+  onProgress: ProgressFn = NOOP,
+): Promise<void> {
+  const targets = candidates
+    .filter((c) => !c.enrichment && EXTRACTABLE_RETAILER.test(c.merchant))
+    .slice(0, MAX_EXTRACTS);
+  const total = targets.length;
+  if (total === 0) return;
+
+  onProgress({
+    stage: "enriching",
+    message: "Extracting verified data from product pages...",
+    current: 0,
+    total,
+  });
+
+  let done = 0;
+  await Promise.all(
+    targets.map(async (candidate) => {
+      const url = await nimble.findProductUrl(candidate.title, candidate.merchant);
+      if (url) {
+        const raw = await nimble.extractProductPage(url);
+        const data = raw ? nimble.parseExtractedProduct(raw) : null;
+        if (data) {
+          candidate.enrichment = data;
+          // Promote the URL we found if the candidate had none.
+          candidate.sourceUrl = candidate.sourceUrl ?? url;
+        }
+      }
+      done++;
+      onProgress({
+        stage: "enriching",
+        message: `Extracting verified data from ${prettyRetailer(candidate.merchant)}...`,
+        current: done,
+        total,
+      });
+    }),
+  );
+}
+
+/**
  * Collapse duplicate listings (same title, case-insensitive) down to a single
  * candidate — the one with the lowest parseable price. Prevents the same
  * product surfacing as multiple trusted results.
@@ -179,6 +250,10 @@ export async function investigate(
   // Hunt the AliExpress source for suspicious candidates so Groq can cite real
   // dropship markup. Best-effort; a failed lookup just leaves sourceMatch unset.
   await attachSourceMatches(nimble, candidates, onProgress);
+
+  // Pull real verified data from a few known-retailer product pages so live
+  // queries get the same trusted-card treatment as the cached golden query.
+  await attachEnrichment(nimble, candidates, onProgress);
 
   onProgress({
     stage: "investigating",
