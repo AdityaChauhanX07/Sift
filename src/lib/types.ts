@@ -87,3 +87,31 @@ export interface SiftResult {
   traps: InvestigationResult[];
   trusted: InvestigationResult[];
 }
+
+/**
+ * A single progress event streamed from the investigation pipeline to the client
+ * as NDJSON. The intermediate stages drive the live progress panel; `complete`
+ * carries the final SiftResult in `data`, and `error` carries a `message`.
+ */
+export interface ProgressEvent {
+  stage:
+    | "searching"
+    | "found"
+    | "source_lookup"
+    | "investigating"
+    | "enriching"
+    | "complete"
+    | "error";
+  /** Human-readable line shown in the progress panel. */
+  message?: string;
+  /** Candidate count, for the "found" stage. */
+  count?: number;
+  /** Progress counters for stepped stages (e.g. source lookups). */
+  current?: number;
+  total?: number;
+  /** The full result, present only on the "complete" stage. */
+  data?: SiftResult;
+}
+
+/** Callback the pipeline calls to report progress as it works. */
+export type ProgressFn = (event: ProgressEvent) => void;

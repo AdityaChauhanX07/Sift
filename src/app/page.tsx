@@ -50,20 +50,32 @@ interface SiftResult {
   trusted: InvestigationResult[];
 }
 
+/** A progress event as streamed from /api/sift (NDJSON). */
+interface ProgressEvent {
+  stage:
+    | "searching"
+    | "found"
+    | "source_lookup"
+    | "investigating"
+    | "enriching"
+    | "complete"
+    | "error";
+  message?: string;
+  count?: number;
+  current?: number;
+  total?: number;
+  data?: SiftResult;
+}
+
+/** One line in the live progress feed (collapsed by stage). */
+interface ProgressStep {
+  stage: string;
+  message: string;
+  current?: number;
+  total?: number;
+}
+
 type Phase = "hero" | "loading" | "reveal" | "error";
-
-/* --------------------------- investigation stages --------------------------- */
-
-const STAGES = [
-  "Searching the web",
-  "Scanning shopping results",
-  "Investigating each deal",
-  "Cross-referencing prices",
-  "Checking merchant trust",
-  "Exposing the fakes",
-] as const;
-
-const STAGE_MS = 720;
 
 /* ------------------------------- helpers ------------------------------- */
 
@@ -85,34 +97,34 @@ function savingsPercent(price: string, oldPrice: string | null): number | null {
 export default function Home() {
   const [query, setQuery] = useState("");
   const [phase, setPhase] = useState<Phase>("hero");
-  const [stage, setStage] = useState(0);
+  const [steps, setSteps] = useState<ProgressStep[]>([]);
   const [result, setResult] = useState<SiftResult | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  // Advance the fake investigation stages while the real request runs.
-  useEffect(() => {
-    if (phase !== "loading") return;
-    const id = setInterval(() => {
-      setStage((s) => (s < STAGES.length - 1 ? s + 1 : s));
-    }, STAGE_MS);
-    return () => clearInterval(id);
-  }, [phase]);
-
-  // Reveal only once BOTH the staged animation has completed and data arrived.
-  useEffect(() => {
-    if (phase !== "loading") return;
-    if (result && stage >= STAGES.length - 1) {
-      const id = setTimeout(() => setPhase("reveal"), 450);
-      return () => clearTimeout(id);
-    }
-  }, [phase, result, stage]);
+  // Fold an incoming progress event into the step feed: events sharing a stage
+  // (e.g. repeated source_lookup ticks) update one line rather than stacking.
+  function applyEvent(event: ProgressEvent) {
+    setSteps((prev) => {
+      const step: ProgressStep = {
+        stage: event.stage,
+        message: event.message ?? "",
+        current: event.current,
+        total: event.total,
+      };
+      const idx = prev.findIndex((s) => s.stage === event.stage);
+      if (idx === -1) return [...prev, step];
+      const next = [...prev];
+      next[idx] = step;
+      return next;
+    });
+  }
 
   async function siftIt() {
     const q = query.trim();
     if (!q || phase === "loading") return;
 
     setPhase("loading");
-    setStage(0);
+    setSteps([]);
     setResult(null);
     setError(null);
 
@@ -122,11 +134,42 @@ export default function Home() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query: q }),
       });
-      const data = await res.json();
-      if (!res.ok) {
+
+      if (!res.ok || !res.body) {
+        const data = await res.json().catch(() => ({}));
         throw new Error(data.detail || data.error || `HTTP ${res.status}`);
       }
-      setResult(data);
+
+      // Read the NDJSON progress stream line by line.
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      let finalResult: SiftResult | null = null;
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+
+        const lines = buffer.split("\n");
+        buffer = lines.pop() ?? "";
+        for (const line of lines) {
+          if (!line.trim()) continue;
+          const event: ProgressEvent = JSON.parse(line);
+          if (event.stage === "complete") {
+            finalResult = event.data ?? null;
+          } else if (event.stage === "error") {
+            throw new Error(event.message || "Investigation failed");
+          } else {
+            applyEvent(event);
+          }
+        }
+      }
+
+      if (!finalResult) throw new Error("Stream ended without a result");
+      setResult(finalResult);
+      // Let the last step settle for a beat before the reveal.
+      setTimeout(() => setPhase("reveal"), 450);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
       setPhase("error");
@@ -137,7 +180,7 @@ export default function Home() {
     setPhase("hero");
     setResult(null);
     setError(null);
-    setStage(0);
+    setSteps([]);
   }
 
   return (
@@ -155,9 +198,7 @@ export default function Home() {
           />
         )}
 
-        {phase === "loading" && (
-          <LoadingPanel stage={stage} candidateCount={result?.totalChecked} />
-        )}
+        {phase === "loading" && <LoadingPanel steps={steps} />}
 
         {phase === "error" && <ErrorPanel error={error} onRetry={reset} />}
 
@@ -228,13 +269,7 @@ function Hero({
 
 /* ============================== loading ============================== */
 
-function LoadingPanel({
-  stage,
-  candidateCount,
-}: {
-  stage: number;
-  candidateCount?: number;
-}) {
+function LoadingPanel({ steps }: { steps: ProgressStep[] }) {
   return (
     <section className="flex min-h-screen flex-col items-center justify-center py-20">
       <div className="w-full max-w-md">
@@ -254,42 +289,51 @@ function LoadingPanel({
         </div>
 
         <ul className="space-y-3 font-mono text-sm">
-          {STAGES.map((label, i) => {
-            const done = i < stage;
-            const active = i === stage;
-            const text =
-              i === 1 && candidateCount !== undefined
-                ? `Found ${candidateCount} candidates`
-                : label;
+          {steps.length === 0 && (
+            <li className="flex items-center gap-3 text-zinc-100">
+              <span className="flex h-4 w-4 items-center justify-center rounded-full border border-emerald-500">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse-dot" />
+              </span>
+              <span>
+                Starting investigation
+                <Ellipsis />
+              </span>
+            </li>
+          )}
+
+          {steps.map((step, i) => {
+            const active = i === steps.length - 1;
+            const done = !active;
+            const showCount = step.total !== undefined && step.total > 0;
             return (
               <li
-                key={label}
-                className={`flex items-center gap-3 transition-colors duration-300 ${
-                  done
-                    ? "text-zinc-500"
-                    : active
-                      ? "text-zinc-100"
-                      : "text-zinc-700"
+                key={step.stage}
+                className={`flex animate-fade-in-up items-center gap-3 transition-colors duration-300 ${
+                  done ? "text-zinc-500" : "text-zinc-100"
                 }`}
               >
                 <span
                   className={`flex h-4 w-4 items-center justify-center rounded-full border text-[10px] ${
                     done
                       ? "border-emerald-600 bg-emerald-600/20 text-emerald-400"
-                      : active
-                        ? "border-emerald-500 text-emerald-400"
-                        : "border-zinc-800 text-transparent"
+                      : "border-emerald-500 text-emerald-400"
                   }`}
                 >
-                  {done ? "✓" : active ? "" : ""}
-                  {active && (
+                  {done ? (
+                    "✓"
+                  ) : (
                     <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse-dot" />
                   )}
                 </span>
-                <span>
-                  {text}
+                <span className="flex-1">
+                  {step.message}
                   {active && <Ellipsis />}
                 </span>
+                {showCount && (
+                  <span className="shrink-0 font-mono text-xs text-emerald-400">
+                    {step.current ?? 0}/{step.total}
+                  </span>
+                )}
               </li>
             );
           })}

@@ -7,7 +7,10 @@
 import { NimbleClient, toDealCandidate } from "./nimble";
 import type { AliExpressResult } from "./nimble";
 import { GroqInvestigator } from "./groq";
-import type { DealCandidate, SiftResult } from "./types";
+import type { DealCandidate, ProgressFn, SiftResult } from "./types";
+
+/** No-op progress sink, so callers can omit onProgress. */
+const NOOP: ProgressFn = () => {};
 
 /** Parse a price string into a comparable number; missing/unparseable sorts last. */
 function priceValue(value: string): number {
@@ -68,14 +71,35 @@ function bestSourceMatch(results: AliExpressResult[]): AliExpressResult | null {
 export async function attachSourceMatches(
   nimble: NimbleClient,
   candidates: DealCandidate[],
+  onProgress: ProgressFn = NOOP,
 ): Promise<void> {
   const suspects = candidates.filter(isSuspicious).slice(0, MAX_SOURCE_LOOKUPS);
+  const total = suspects.length;
+  if (total === 0) return;
 
+  onProgress({
+    stage: "source_lookup",
+    message: "Checking AliExpress for source matches...",
+    current: 0,
+    total,
+  });
+
+  let done = 0;
   await Promise.all(
     suspects.map(async (candidate) => {
       const results = await nimble.searchAliExpress(candidate.title);
       const match = bestSourceMatch(results);
-      if (!match) return;
+      done++;
+
+      if (!match) {
+        onProgress({
+          stage: "source_lookup",
+          message: `Checked ${done} of ${total} on AliExpress`,
+          current: done,
+          total,
+        });
+        return;
+      }
 
       const aliExpressPrice = parsePrice(match.price);
       const candidatePrice = parsePrice(candidate.price);
@@ -90,6 +114,17 @@ export async function attachSourceMatches(
         aliExpressUrl: match.url,
         markup,
       };
+
+      const detail =
+        markup !== null
+          ? `same product on AliExpress — ${markup}x markup`
+          : "same product on AliExpress";
+      onProgress({
+        stage: "source_lookup",
+        message: `Found match: ${detail}`,
+        current: done,
+        total,
+      });
     }),
   );
 }
@@ -113,15 +148,28 @@ export function dedupeByTitle(candidates: DealCandidate[]): DealCandidate[] {
 
 /**
  * Run the full pipeline for a query and return a partitioned SiftResult.
- * Throws if Nimble or Groq fail; the API route turns that into an HTTP error.
+ * Reports each real step through `onProgress` so the client can show a live
+ * investigation feed. Throws if Nimble or Groq fail; the API route turns that
+ * into a streamed error event.
  */
-export async function investigate(query: string): Promise<SiftResult> {
+export async function investigate(
+  query: string,
+  onProgress: ProgressFn = NOOP,
+): Promise<SiftResult> {
   const nimble = new NimbleClient();
+
+  onProgress({ stage: "searching", message: "Searching the web for deals..." });
   const { shopping, organic } = await nimble.searchDeals(query);
 
   // Only shopping results are candidates. Organic results are passed to Groq
   // as supporting context (e.g. review-site recommendations), not investigated.
   const candidates: DealCandidate[] = dedupeByTitle(shopping.map(toDealCandidate));
+
+  onProgress({
+    stage: "found",
+    message: `Found ${candidates.length} candidates`,
+    count: candidates.length,
+  });
 
   // Nothing to investigate — return an empty-but-valid result.
   if (candidates.length === 0) {
@@ -130,8 +178,12 @@ export async function investigate(query: string): Promise<SiftResult> {
 
   // Hunt the AliExpress source for suspicious candidates so Groq can cite real
   // dropship markup. Best-effort; a failed lookup just leaves sourceMatch unset.
-  await attachSourceMatches(nimble, candidates);
+  await attachSourceMatches(nimble, candidates, onProgress);
 
+  onProgress({
+    stage: "investigating",
+    message: "Analyzing with AI — classifying each deal...",
+  });
   const groq = new GroqInvestigator();
   const results = await groq.investigateDeals(candidates, organic);
 
