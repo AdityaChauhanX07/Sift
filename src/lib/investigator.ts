@@ -32,14 +32,12 @@ const MAX_SOURCE_LOOKUPS = 5;
 const MAX_EXTRACTS = 3;
 
 /**
- * Retailers we actually enrich live. findProductUrl can locate Best Buy and
- * Target product pages too, but parseExtractedProduct only understands Walmart's
- * response shape — Best Buy/Target Extracts come back as schema.org Product/
- * Review entities it can't read (verified live: they parse to null). Targeting
- * Walmart only keeps the 3-Extract budget on candidates that actually yield
- * data instead of wasting it on guaranteed nulls.
+ * Retailers we enrich live — those whose Extract shape parseExtractedProduct can
+ * read (Walmart's proprietary shape, Best Buy's schema.org shape). Target still
+ * returns no usable entities, so it's left out. The MAX_EXTRACTS cap applies
+ * across all of these combined.
  */
-const EXTRACTABLE_RETAILER = /walmart/i;
+const EXTRACTABLE_RETAILER = /walmart|best ?buy/i;
 
 /** A clean display name for a retailer string, for progress messages. */
 function prettyRetailer(merchant: string): string {

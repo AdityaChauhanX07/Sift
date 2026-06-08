@@ -23,14 +23,22 @@ const FIND_URL_TIMEOUT_MS = 15_000;
 /**
  * Retailers whose product pages we can find + extract, with the URL path that
  * marks a real product page (vs. a search/category page) on that domain.
+ * `preferPath`, when set, is tried first: Best Buy's schema.org JSON-LD lives on
+ * its /site/reviews/ pages, so we prefer those over a bare /site/ match.
  */
 const EXTRACTABLE_RETAILERS: {
   match: RegExp;
   domain: string;
   productPath: string;
+  preferPath?: string;
 }[] = [
   { match: /walmart/i, domain: "walmart.com", productPath: "/ip/" },
-  { match: /best ?buy/i, domain: "bestbuy.com", productPath: "/site/" },
+  {
+    match: /best ?buy/i,
+    domain: "bestbuy.com",
+    productPath: "/site/",
+    preferPath: "/site/reviews/",
+  },
   { match: /target/i, domain: "target.com", productPath: "/p/" },
 ];
 
@@ -306,10 +314,17 @@ export class NimbleClient {
       if (!res.ok || json.status === "failed") return null;
 
       const organic = json.parsing?.entities?.OrganicResult ?? [];
-      const match = organic.find((o) => {
-        const url = o.url ?? "";
-        return url.includes(entry.domain) && url.includes(entry.productPath);
-      });
+      const onDomainWith = (path: string) =>
+        organic.find((o) => {
+          const url = o.url ?? "";
+          return url.includes(entry.domain) && url.includes(path);
+        });
+
+      // Prefer the data-bearing path (e.g. Best Buy /site/reviews/) when set,
+      // then fall back to the generic product path.
+      const match =
+        (entry.preferPath && onDomainWith(entry.preferPath)) ||
+        onDomainWith(entry.productPath);
 
       return match?.url ?? null;
     } catch {
@@ -325,14 +340,22 @@ export class NimbleClient {
    * API. Used to enrich a candidate with real on-page data (price, reviews,
    * seller, etc.) before the LLM judges it.
    *
-   * This is best-effort: it never throws. On a timeout (15s), transport error,
+   * This is best-effort: it never throws. On a timeout, transport error,
    * non-JSON body, or non-success response it returns null so the investigation
    * pipeline can degrade gracefully instead of crashing. The giant raw
    * `html_content` blob is stripped before returning.
+   *
+   * `options.render` enables JS rendering (needed for sites like Best Buy whose
+   * product data is client-rendered); it's slower, so `options.timeout` lets
+   * callers extend the default 15s budget. Defaults keep Walmart calls unchanged.
    */
-  async extractProductPage(url: string): Promise<ExtractedProduct | null> {
+  async extractProductPage(
+    url: string,
+    options: { render?: boolean; timeout?: number } = {},
+  ): Promise<ExtractedProduct | null> {
+    const { render = false, timeout: timeoutMs = EXTRACT_TIMEOUT_MS } = options;
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), EXTRACT_TIMEOUT_MS);
+    const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
     try {
       const res = await fetch(WEB_ENDPOINT, {
@@ -343,7 +366,7 @@ export class NimbleClient {
         },
         body: JSON.stringify({
           url,
-          render: false,
+          render,
           country: "US",
           locale: "en",
           parse: true,
@@ -375,16 +398,35 @@ export class NimbleClient {
   }
 
   /**
-   * Distil a raw Nimble Extract response (Walmart product shape) down to the
-   * verified fields Sift actually reasons over. Navigates
-   * `parsing.entities.Product[0]` and pulls price, seller, and review data.
+   * Distil a raw Nimble Extract response down to the verified fields Sift
+   * reasons over. Walmart and Best Buy both surface under
+   * `parsing.entities.Product[0]` but in different shapes, so detect which and
+   * route to the matching parser:
+   *  - Best Buy: a schema.org entity with `@type === "Product"`.
+   *  - Walmart: a proprietary entity carrying a nested `product` sub-object.
    *
-   * Returns null if the shape is missing or carries nothing useful (e.g. a 404
-   * placeholder page where price and reviews are absent/zero), so callers can
-   * simply skip enrichment for that candidate.
+   * Returns null when the shape is unrecognized, missing, or carries nothing
+   * useful, so callers can simply skip enrichment for that candidate.
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   parseExtractedProduct(raw: any): EnrichedData | null {
+    const entity = raw?.parsing?.entities?.Product?.[0];
+    if (!entity || typeof entity !== "object") return null;
+
+    if (entity["@type"] === "Product") return this.parseBestBuyProduct(raw);
+    if (entity.product && typeof entity.product === "object") {
+      return this.parseWalmartProduct(raw);
+    }
+    return null;
+  }
+
+  /**
+   * Parse Walmart's proprietary Extract shape (nested `product` / `reviews`
+   * objects under `parsing.entities.Product[0]`). Returns null if nothing
+   * useful is present (e.g. a dead/placeholder page).
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  parseWalmartProduct(raw: any): EnrichedData | null {
     try {
       const entity = raw?.parsing?.entities?.Product?.[0];
       if (!entity || typeof entity !== "object") return null;
@@ -439,6 +481,63 @@ export class NimbleClient {
         reviewsWithText,
         recommendedPercent,
         ratingDistribution,
+      };
+    } catch {
+      return null;
+    }
+  }
+
+  /**
+   * Parse Best Buy's schema.org Extract shape: a `Product` entity with `offers`,
+   * `brand`, and `aggregateRating`. Best Buy doesn't expose a struck-through
+   * price, recommended-percentage, or full rating distribution, so those stay
+   * null/false. `reviewsWithText` reflects the sampled `Review[]` count, not a
+   * platform total. Returns null when nothing useful is present.
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  parseBestBuyProduct(raw: any): EnrichedData | null {
+    try {
+      const entity = raw?.parsing?.entities?.Product?.[0];
+      if (!entity || typeof entity !== "object") return null;
+
+      const str = (v: unknown): string | null =>
+        typeof v === "string" && v.length > 0 ? v : null;
+      const num = (v: unknown): number | null =>
+        typeof v === "number" && !Number.isNaN(v) ? v : null;
+
+      const offers = entity.offers ?? {};
+      const priceNum = num(offers.price);
+      const realPrice = priceNum !== null ? `$${priceNum.toFixed(2)}` : null;
+
+      const sellerName = str(offers.seller?.name);
+      const brand = str(entity.brand?.name);
+      const inStock =
+        typeof offers.availability === "string" &&
+        offers.availability.includes("InStock");
+
+      const rating = entity.aggregateRating ?? {};
+      const averageRating = num(rating.ratingValue);
+      const totalReviews = num(rating.reviewCount);
+
+      const sampled = raw?.parsing?.entities?.Review;
+      const reviewsWithText =
+        Array.isArray(sampled) && sampled.length > 0 ? sampled.length : null;
+
+      // Nothing useful came back (e.g. a redirect/SPA page) — skip it.
+      if (!realPrice && !averageRating && !totalReviews) return null;
+
+      return {
+        realPrice,
+        wasPrice: null,
+        isPriceReduced: false,
+        sellerName,
+        brand,
+        inStock,
+        averageRating,
+        totalReviews,
+        reviewsWithText,
+        recommendedPercent: null,
+        ratingDistribution: null,
       };
     } catch {
       return null;
