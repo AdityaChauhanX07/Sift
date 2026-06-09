@@ -1,85 +1,15 @@
 {
   "wireless earbuds under $50": {
     "query": "wireless earbuds under $50",
-    "totalChecked": 21,
+    "totalChecked": 20,
     "traps": [
-      {
-        "candidate": {
-          "title": "JLab GO Air Sport True Wireless Earbuds",
-          "price": "$24.99",
-          "oldPrice": null,
-          "merchant": "Target",
-          "thumbnailUrl": null,
-          "isOnSale": false,
-          "sourceUrl": null,
-          "nimbleRaw": {
-            "entity_type": "ShoppingResult",
-            "item_link": "",
-            "position": 1,
-            "price": "$24.99",
-            "source": "Target",
-            "title": "JLab GO Air Sport True Wireless Earbuds"
-          }
-        },
-        "trustScore": 40,
-        "verdict": "trap",
-        "flags": [
-          "No verified discount"
-        ],
-        "evidence": [
-          "No old price or discount shown",
-          "Target is a Tier 1 retailer, but no sale is indicated"
-        ]
-      },
-      {
-        "candidate": {
-          "title": "Up to 65% off!Wireless Earbuds, Bluetooth 5.3 Earbuds Stereo Bass, Bluetooth Sports Headphones in Ear Noise Cancelling Mic With Mini Charging Case Ear",
-          "price": "$2.17",
-          "oldPrice": "$2.45",
-          "merchant": "Walmart - WJyouxuan",
-          "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcR2qUn8VAh9rfIw9jHr_osNyTGpVlpY_FbtsyWx9nykgnDIDCCUaeuNNq7WKRGWVGHkZyUYgj2cl0TlrECIvgJyutdCCuDKsO8TFqsjW1BK3vEDqqXQouJiYQ",
-          "isOnSale": true,
-          "sourceUrl": null,
-          "nimbleRaw": {
-            "entity_type": "ShoppingResult",
-            "is_on_sale": true,
-            "item_link": "",
-            "old_price": "$2.45",
-            "position": 1,
-            "price": "$2.17",
-            "source": "Walmart - WJyouxuan",
-            "thumbnail": {
-              "alt": "Up to 65% off!Wireless Earbuds, Bluetooth 5.3 Earbuds Stereo Bass, Bluetooth Sports Headphones in Ear Noise Cancelling Mic With Mini Charging Case Ear. 11% OFF. ",
-              "image": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcR2qUn8VAh9rfIw9jHr_osNyTGpVlpY_FbtsyWx9nykgnDIDCCUaeuNNq7WKRGWVGHkZyUYgj2cl0TlrECIvgJyutdCCuDKsO8TFqsjW1BK3vEDqqXQouJiYQ"
-            },
-            "title": "Up to 65% off!Wireless Earbuds, Bluetooth 5.3 Earbuds Stereo Bass, Bluetooth Sports Headphones in Ear Noise Cancelling Mic With Mini Charging Case Ear"
-          },
-          "sourceMatch": {
-            "aliExpressTitle": "SK28-Invisible Sleep Headphones Bluetooth 5.3 Earphones Mini ...",
-            "aliExpressPrice": 1,
-            "aliExpressUrl": "https://www.aliexpress.com/item/1005011659839643.html",
-            "markup": 2.2
-          }
-        },
-        "trustScore": 10,
-        "verdict": "trap",
-        "flags": [
-          "Title is keyword-stuffed spam",
-          "Price $2.17 suggests AliExpress dropship",
-          "Found on AliExpress for $1.00 — 2.17x markup"
-        ],
-        "evidence": [
-          "WJyouxuan is an unknown marketplace seller",
-          "Low price and keyword-stuffed title indicate a likely scam"
-        ]
-      },
       {
         "candidate": {
           "title": "Soundcore P25i Bluetooth True Wireless Earbuds",
           "price": "$24.99",
           "oldPrice": null,
           "merchant": "Best Buy",
-          "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQbAVxRFoFZlxaCM-P7uXXp-PL4JMi_YsytuxNLrRBgCzFU8118vC-ffA3GGiNb_jGKsw4blcRy6RQIaf7k0L-tiLTrS2-xvbzwpBetmh47zHxkz0UqJR1v",
+          "thumbnailUrl": "data:image/webp;base64,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",
           "isOnSale": false,
           "sourceUrl": null,
           "nimbleRaw": {
@@ -90,19 +20,134 @@
             "source": "Best Buy",
             "thumbnail": {
               "alt": "Soundcore P25i Bluetooth True Wireless Earbuds. ",
-              "image": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQbAVxRFoFZlxaCM-P7uXXp-PL4JMi_YsytuxNLrRBgCzFU8118vC-ffA3GGiNb_jGKsw4blcRy6RQIaf7k0L-tiLTrS2-xvbzwpBetmh47zHxkz0UqJR1v"
+              "image": "data:image/webp;base64,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"
             },
             "title": "Soundcore P25i Bluetooth True Wireless Earbuds"
           }
         },
-        "trustScore": 40,
+        "trustScore": 50,
         "verdict": "trap",
         "flags": [
           "No verified discount"
         ],
         "evidence": [
-          "No old price or discount shown",
-          "Best Buy is a Tier 1 retailer, but no sale is indicated"
+          "Best Buy is a Tier 1 retailer with buyer protection",
+          "Soundcore P25i Bluetooth True Wireless Earbuds is a legitimate product, but lacks verified sale data"
+        ]
+      },
+      {
+        "candidate": {
+          "title": "JLab Go Pop ANC True Wireless Earbuds",
+          "price": "$14.99",
+          "oldPrice": "$30",
+          "merchant": "Best Buy",
+          "thumbnailUrl": "data:image/webp;base64,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\\x3d",
+          "isOnSale": true,
+          "sourceUrl": null,
+          "nimbleRaw": {
+            "entity_type": "ShoppingResult",
+            "is_on_sale": true,
+            "item_link": "",
+            "old_price": "$30",
+            "position": 1,
+            "price": "$14.99",
+            "source": "Best Buy",
+            "thumbnail": {
+              "alt": "JLab Go Pop ANC True Wireless Earbuds. 50% OFF. ",
+              "image": "data:image/webp;base64,UklGRhAXAABXRUJQVlA4IAQXAACwawCdASrMAAMBPkEejUUioaESONVUKAQEsbdqr9YBolYyoUEbDec/p/yZ9uq6/4fyZf6Pymj99s/7n1k+jTzBv0q/z/9s9bv2CeYv+cf5T9rfeo/zPq0/u3+c/WP4AP7J/kusx9AD9ifTN/cL4Rv25/cD2nv/ze2v5XxR8zHuj3J3gzUX+Yfkn9F/euM/5ZahH5N/QP9FwZ9qfQU91PtX+l9Qb6n/gejniAfrV/vuPf9B9gD+hf2r/weo3/1f5H0GfR//g/1nwIfzj+1f83+/fkp84PsQ/bf//+53+w3//J6AQZtP+O2oxc/YP9AJswQWd61JFlxJFlxJFlxKJt/yg5mzarX6j/Gylv7g9BQqo3NaQZMPrcPMNF/UYNcNa+okTTgFmYmwsUHIhscd5sBLFBp57phl4XCZAq0yCeqt6RVGPARsFmlfhwtCsmffHpcFtftxXvD8TF9Bkruxok+QVV8a3yZ4T9Xc0UUn3JPMFwlnMdmOIamxbaOSNE/i7rIlHT/DdmOsoHVeO4LLp3LM428TMa44eM5dyrhvVK2I96NRaO5bntw9W/9FMGntZlwpELrkni0oPXSM2sGoQMMNkuQydlugZCPf0gfTFF0on1YfSCGd3XNuZPIh3cfkB7/pal7HiPs419FkI8bxcE6YrSWYp2WGfXOeeE7n5n+ZOEE8cOVSWnW6p3ocF9wS9LouLZHpznAkmsTpLxTsTunuAJA7DVyS0lZ56P03tKm/9jwZH3glcWHU5EcV8lnsBvTN80vaR+IsiAzOB+/l3extjMgUzGLQ8Pfmst9KNPbK7ef2APZAIBf59zA83aSycTqDb/uzPEEugoayayfvSclRkeRSxlbOI+oKQE6ivHJxuc+TL+difN3ZsZD5HbRVI7gXwT699tKA/4TwKwyo4CnXKenJpZ51gxA3nkuvEEh8u0h5nmHSt9FUf/FFs2CT3vP+wtNRwzEMNw120+52D8cEfIkur3Vx93q5X2kOaDV3vvxcpuhyTfqR6TSIWj1CQu0yjRX9Nj/c+ZpuDnBxpEcXxQcIM2mpXpNON0givFhdXbX1ULea/xUy332NgP6VE4tsoMZzDRsKdkUQQO2457QXkVghmHxfqnq3f2lymJpkxTYxMQMRGyrbnJ17rH47bnJ17G25ugAA/ujKAAAA9Qwl/kB6gJkiom/22Z/5xK7fGlkK1a52JRuYtsOgqE0+K5xpfB4QOFcKtlzsO/P9YDQaa2M/0/16+t2365+HGfAs4HrLcHdDBAaj8y1tIWwKi/ybMUjqwwUWQfd+3oiLCodzX4IF75kIjXFP7i+D1VjvcBJy+xQVad7glEpeOx1ZmhL58inSoPxX1PXWqAcWxZ0131RCLYjPEVoVONvU1D9a2ZdpFvJLoCJpWKNjByWlc6WlM31q3LaWU010gtivsVEEZOG1/I7hOZDyNyVmBkQHOCWR+poHBHWxi0tXx9/2d/Np6JsM2dCxuWoxWxEQGQSp9YOFXcgYbLWkLw64ZV2GD85wtZdiRlJdezhom89XxTkIm0iA7T8SzvtF6urMpT8ncGUAZpVkfOC7AD9S1nCKIvH5gglGnhvDtVJgi617dDuwZKT+VnrfYid9PDu0SIH9zhfjr45claWqe60OrY+JzSlmCfVBMVRO+FkbtKaykwXdcH30M3uFt8aCYN7Vs7i19b/bCkEzKhruag+Mwx24KNqchfBJOwoMt4NQZKDJqhpAvuin8oYyfc/yn1CaEgY5vStKV79mIJC+AJKyQB3PkCa/UoeCYfQONE2+4K5FwizcY01MDMVCHzRXaFONUf4BM72zMCoLS8xH13LWdggJnAEe3+JPqsmzKFHA1pnF1LKTxPW8N2z76LBIkxxA5EwouX2xI1pUfY9OOK/pISRqAdGZD8Jdu5ULdFcumEbZtxBqs+pq7OCSgBL63iWU/T02U0rIkR5pCJRJcK/YwZOtxpmnEScbJ/QpoG0nWzoqJLkksQEe9hvHgOqdoKKctCgP0j9X+9tSVn7tCueMn/+8iG6RdB2uCRD586EMzr/dMTzrG1N6ZH+uRr45NdKKEz4ssLpXfULq904t7Rp1xjAEjn0f3HpDbyiW08CJNyCJOJLGu+WpoWDHliW8/K31CtGSR2VQ2Vdc0cl2OLhFZeKRlKny6PcUj6UOxpX1QJ9kQ9DPyFNbxm4JBtY//1YUekTVGLoxO/h5U+iEOFBc0sT6Hcj5amCcdOpLBE3FGfnXwhHfKf2lXMDXYz1B0giN3cOEJzF9VNsV9dz55hYHsqNREhUYkyFv+SB7EpVFCNTHBv7MH+WpYyii0WJMaOuz3QG2+GR41ziz316Qb6ihmIaxUUoUeIZ37M3U4qS9/iPzbuhGDXROGzNpOSzvCTKEsYClF6noj1SCZhyZESZC6UXO1yyCKNFcOdfd3XkkPB/Xr915TkLYU7d2ywgaSz4UH7e535OXXe2FM+P9nb6xN6ZyUFd1XfKnSLwQfd6x2ELc+7I9MgJBwoYKDpW9EycyNVKmHMtfrUuSv0KMpbn1Skz7woy6t9/5aODNBwkGo/C653utdRBMbAPsXYwclzsBcxB7UK67bv95l5jR+m/oTv8SY779BtFPC9HyTSUgwkL0ab3ni6NcF4vcLOuOohd+GN3IG1YnGvP+KtqpWi0eBI0h4iuBtwsQvuV5RbauhmuYrGI9PBlZ4d95ScNPXR0DPU+SnFROsMVnynIygDrV18EMrhkr4bBskZCDIuoj74szwTdWJtlr613Y/m2OXLQrIzpkDU8CUsbUCdaJ7/zHQnxvORm60Pdm9ETCVkHFj92/QS3a/a74lN4Xtpf/5BtYRtP3j4Wv1JnaVLqOiH+hzgAxp7WcSAakkjfE6VRD/NKTX3SNxBtw21mq/9YzB56ANWFYVxT7KY+ZZV39btFBqqCDdu0Sx3C3eaKmtpdBK7MsUKAlT7Nc/gxXk4vA3wBZWR+2Wph4Mc72yC8C5yHpISptdq3rEbrWGXvaGpaXlufu4CzkS23xGQQiYSL9rUYXUW+2Gz/O8MKi/AmNB6grD6IkHPT2u1g3bq06KKlsqRu/B7P/j+YLfLIoCEiPPYX0niFf6dXFuCN3Vy7POjdqzwAb1yrWUgh7ldRh74FR10TJpZtXXWdzfyiyKxIe66y3REGoG1I1Z85tML3MgqrM8ksJ3FdhNNl7onUs1nQOR0udjJaoN1wG7qQkZrOHmFfaj3Zl/OpES3HYefnMznXQlA5uhKzMDAkyTBx7mElNJNeLfK53jSIs6dhvZfQyjDs38gBL07/qGcmZZe3KXvAUle98RDT8tyGwy1xTIOtdYByNkeJIQsyzYp5HKJtoDZBKGH7RnQKg37u72/pB4k6Hcd/a3KXV3gX5Hk39N+MAKfH5mUrtwod396JCTty2R+Riwpy1Crkgtuao8bxZYYHZe0yCrXJIYtuqAgPkOAKKEEFE1NpaCjk1PkuVZr/Q5sRr/LzJvCqPtaH5L2fB1E/nVdkQhMcnl0tVVosG89+3fho9NpuqOjWTtsO1zmh8lEKGy3FFJyVXZExlYrhT6Kyl26EDDktWgrs315hdzAzn9s3OOQdHt/6JCWXSQeaCd9GiR03njWuFcHJd2zkUNsOlDfMlWY5xgrER4s8MBdHkRaopWJz0rt8AoWxD5IFOvOgYZcmtFTL/vLRddRbPZrbaWnozfzZ/oL4YF6IwE85aKq/R0fufbSZAmEd81v9skPO8yuYUBiyhWpYTvkGS+ZnDbGbQId0SkDOW9yGc5rOuYSyMso3+Y/l+eCVodbSo3/rwHt/jBiMwCSiqtn848lHmRFCAd8X2+7cfToE39wIz0tFX4N5fUtOKBKXyWEJrrMjd374Fj9TC4etZ/P/YgZd4Xe498pfUl3/mxEagIr01h9HFJQSATngR8ML7vbhQ+ZlmWVWMVe0KWYYiOC3cPTBfqMZJ/klbg4PjrXOf8wL2VsXmvlLjdfBxVrYafdcV2S1eicoUzHjxiJixYBkm6VPDqrAgfa5dW8Ek5jfor94wHTKb9OdtBvWDt4ERR9Vf+6V/wCKPrB0NsaCM8UKH06/BdAhxBnghDzd3Pwvmsg9WiyvDqYA6xX6qBXD5Aa36/Xo5NDtJF5P46uS9n7wGQ/H8m0xbqN8a3JZs5fxDmF74OMTjcC3m3BXspVxdHj/D9vT5pxtWWyVwMBWWEtYgPZOmKLGKtS4CURrmt4Yn+yQl4Aj4O2Qf/wYvFT3y4c5j1sN2lhIlrCxzv0wYGgukHMc2tvUxkZzt2yl4PF+H+RL5+yfV8zuE25pdbZjZ8G5Ts8yhEz4SmRL/KnDJHUdS1J5Lby6pwuGcEfGqppYRmsaCL5JBSYG4jb8NqZ2PJ6xANfHDprqtfMibgcd1z84QL7GKnWaC8kTnSQNTcgM9XuIbqZBhBkpiuiXtl2at1XYqYmsvruE4HosqYjwxnfVGqfsM+1Pcdx8egmxC9EVWFF24SFY6RqeJ3wJdRElVGRah85ro1ljkd+UyFz6hZZaTn5l+L+HbQ3IzQnqnyYuvNmuJzS22Xkepwa8f2sMfHhvETynCXUAzXwZo4MyW80O9VDI3+ZiD7BbusTEqsQJcgnIYf+F+HjBrzRWFEJMUx+6fEEu5odZDq1vcy5PRpTFx4BdK72543P5D7hI5dbcIRybtVt3HYFNnkLL71slBB6kG+XhTLsUEV4FzItEMr5SgqpmSuOIPuGwAlWlKM1lo7Sje9om+vuHK4WbTCZnnda6XPrkyoNkgylOOhl3/qlxwgqqQay6EUR7yjs4adsANTCGirQnf/0hIdXyZEiwKbolypjgFDva4DOzNDVBwQsflXYkIF500P2QTjss/y6ve38iYUBoctEiN3pMXKID2kOINjZXkU+vA8Ih//GiNyZbLRGuKRWI4Bl7qtDeGRP25x7Xg7ALEROBTyQB5BrXycnr87Zfj71qFXlSjKOdc74nEyuUoN4x8rAO6iRw7anJFhU1UuKFKoP5p8bUSbaheqqavY+HPLrPPLA4SEHgSupZqktnEbwxWg6XCfXjd8NXFn9PLqe/mOHAU+W6mPKQoXPKuJoI3Iw1CPVQfRGOlTjzCEZNPN8Ql9WJVSvGsmZvfp58AuBA/r34ZltcfL4eYjyhXgg8NEIOs1/IPXfWuGCne9WHflCdhACt5kG5aBzigopXgY/zOIU/45jY/zo5vgV5Z/Kxypozd/eFBDMg94uXoNhfjjbXgrH9k1EfRwY7PWj8754gR19IQJq6KFez/JIN5JzkNU4/TKvWym4l8g7H4qFZbZB8Ajh5laVHa6TavGKpCb5ejvN6HWkQiZy9HPqEe0QNxc4AmFLTht127ekG3Rh2vZgszlBhl+2+FMEPgcGmis3Q9G9Od89yoJjazHR0IFRj5sa1uxAz3fieV+DH3UDmyfsMlWvC/tcQiVqlBpKPfeVsSwo3asROInkcirpXFbCJ0+h8El3AxzlUI0+dza0ZBeHXsa/87ogEZrh7grgRTIjogEbBY9W5q/G88C7bKsJa3R4wuaCPEg8AE0NhxZQpkSJTXOS7wyOAM2CyTVABpI6iqez53TEGVxssdyGw3MydPvq7/8WFeWnSs4BMHGaButaKdH4SoBrKhsGXxyhQePjfA0AsOLmUhSkBwAwK72kZpt+38J5nQ1FqBEsumcApxlA2snScMZh3ycKrqbuAo+HySnkAJ+gHk44TbEQWb/53e3/FgvkLrhM4aupUmZ5YjysWwWiQc/6YCWnlT/mLBI+XJzed8S8UV7D6b+w9LVKs0g2z1ZKn+VQUPu/KRyYdWIF+XZMD7gnf7ra6ts9cXAP4VRs4nXw8RF/KgALRrw8K+mWqiP0QV2EtOhBFwA6yTBf3iCA5wOdkIh+gLzvRYAc41uOXID+lKwl8YHNzypDMVKDSj71CUADEl+lc0iYwpkAa0D0ybe+4Jxl12t/vdzmcXMUV6E2mAnvMQEnR4Zt0t258cox3Hv+/Iua4z9gPMz0SZ7a0kO/blY9V+aV4t37zyWutXolpWDPJlaouSGrNsuLDEAiV/T9v0V/VtRAF6pdE8RpTWgU/jM5vy5Vtf/PfIzD0ZGT/453SdTHXIdi0NVusbaCZIFcs/0Be6yxKgxLT/Yv8KkVDEFH4oNhvPWmjfIvfJoVcl+tAztE+6w8mkjHbCgwHDZKQK1PTw2cPQdx2qtgnFOxUJ0+1tPZ6i9pmLA/xUE0RDYIi6XVS102PSURwLFKv8V+fofKT7U68s0NP674p7Gjz4MprNUPULCEV7m2SFr59pjX30v/xaGJ1OZLmfmo0VCWgCxLkeDaW4dLc1+z2zgVHbZbcuMqfP8dUEYu7vNvFTSO86Pwf2CIy2nt8pQnsaR+Z8QbuzACsalq5uQ/4s02JOBtLPqzDR83cDFpVkvUESkIWLDDRJregtZdUS/TGMnrfwepYIU1J50uHmdch/2cuIXiDZTdUmtGYy/bBbwT4f51clZ7n3oNu+rUhhax9NDFTqqVHekZh3+QiHk5V4L7gCqB0+Rug2r1lOmT0UV3aUY28NcYDJASDF8T+4iTD+3EvayOo+J9QhWGa6fIIkcX0KNMLWw8ZTIs9al6VxnmCmFYeRmzzmX++x+cZVLb5fMe/2tZzQ+h3rXVKVj2evP9ilCpquYJoRSQdukxDgWYj0IwTnXpc07xEs6r5laKsYcu8IHyJF7zVnSWuZu1MeJVJk1KZ068GuIvBxhkxYPz2nxrSVE6M1haaryKYgvBJp8sF2ckNc5/ilf8CSiUXeoONmvWcmZRKZDQBsR8jSfxqJKwurrEYao8BWeVE51ThWVMjDtBDVxtTEsVzV1HI9RCDtDcKA3PJFi9oP3hHb7VvKQ98DNw1SmxqcPnUVIdmrjABN50yN5RRett83hJIE5xoecFVXm+HiB9yHjHI+Q0Xes9Wq2vOtvtKVoQdqr6epYUf+3lhDAw+DfcoJK6dHlkdesPHSVkvmezYTRHSc/l4+QAoIEfK2z2eH2ckDwamt3xG2cEVcpApPxFggjCDJjACvglB0lcB+yls/yFZYVceL/f5avSfjWB3LV64ppMs1ACF55pQ/j6Pgfe8eMxVWXRu8po44s+iA9wmPx5ePMOYbUho5P+EsCiw1fBLOXdFHU7HYWTWAcFEVifv6Adi9pbvgEUUd7VIX06amBha628UL8qTuCRYwfs54ENYGq5Zr6fzVkpYFbP63WS5ineBgI7cXIFJ/M5dSpesyMHu1Fw+UK1PNh4psJKUzuxHW6NaG4CUroc4jvPsTaYxQmb5AoWrHCe4/dZe3JlaSJ44LGnBq+ajUaOwokB3cNY1anVLkvgmYcJHGmsKi32B1KP2kxUwbhuL3HSrZebMm2HP1TWb9lMBytt3t9pRtQ3qSH1Z3TpgiNo7285T0AQTam9apsrpVlEDJM1CiRQTUt7n9Y14cRARKMY86piDLZgFfmmiutfS6UWmY5ycIuqNexcaa5Ot2BJDKp21O6W+V5Yp6eS2MaDneg5VMSkLTDicm1C1qnFIOHytT/w1t8dSOqie2q0el67Wv3Szr9pNU7X/1YNLwVqKJhc1mgOfNz6pKWCs3GcPdSHoYd44bCmXM4MXRf1VqOv8mjUe16DaEfSjAg5b7QjalHWFxYygjWt9jf8+tnjimQLrvRXusnYu/6BRZLjVyHDupHySgpTbFwqNxv74b2/lCwuGlwrHWeQ9MinJWCPgm8pyVbRG5RqQ7Cc5uj81DwpteCPsfMHAyx0EJK8dJa5t6I9amZ1MqYpgFPa8WqT5qIfyRLRzpDbIj4bXgITC/iRnLcIHaYGcF4TGckKCsW8AIx/V8BmBCMPrcPXA8mAG8BAKp9+ogAAAAAAAAAAA\\x3d"
+            },
+            "title": "JLab Go Pop ANC True Wireless Earbuds"
+          }
+        },
+        "trustScore": 55,
+        "verdict": "trap",
+        "flags": [
+          "Discount of $15.01 from $30 may be inflated"
+        ],
+        "evidence": [
+          "Best Buy is a Tier 1 retailer with buyer protection",
+          "JLab Go Pop ANC True Wireless Earbuds is a legitimate product, but discount lacks verification"
+        ]
+      },
+      {
+        "candidate": {
+          "title": "Heyday True Wireless Bluetooth Sweat Resistant Earbuds",
+          "price": "$14.99",
+          "oldPrice": "$18",
+          "merchant": "Target",
+          "thumbnailUrl": "data:image/webp;base64,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",
+          "isOnSale": true,
+          "sourceUrl": null,
+          "nimbleRaw": {
+            "entity_type": "ShoppingResult",
+            "is_on_sale": true,
+            "item_link": "",
+            "old_price": "$18",
+            "position": 1,
+            "price": "$14.99",
+            "source": "Target",
+            "thumbnail": {
+              "alt": "Heyday True Wireless Bluetooth Sweat Resistant Earbuds. 16% OFF. ",
+              "image": "data:image/webp;base64,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"
+            },
+            "title": "Heyday True Wireless Bluetooth Sweat Resistant Earbuds"
+          },
+          "sourceMatch": {
+            "aliExpressTitle": "qcy melobuds",
+            "aliExpressPrice": 21.35,
+            "aliExpressUrl": "https://www.aliexpress.com/w/wholesale-qcy-melobuds.html",
+            "markup": 0.7
+          }
+        },
+        "trustScore": 40,
+        "verdict": "trap",
+        "flags": [
+          "Same product found on AliExpress — likely dropshipped"
+        ],
+        "evidence": [
+          "Target is a Tier 1 retailer with buyer protection, but product is also found on AliExpress",
+          "Heyday True Wireless Bluetooth Sweat Resistant Earbuds may be a legitimate product, but lacks verified data"
+        ]
+      },
+      {
+        "candidate": {
+          "title": "Wireless Earbuds with Bluetooth 5.3, Stereo Bass, Bluetooth Sports Headphones, in Ear, Noise Cancelling",
+          "price": "$2.44",
+          "oldPrice": "$2.89",
+          "merchant": "Walmart - WJyouxuan",
+          "thumbnailUrl": "data:image/webp;base64,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",
+          "isOnSale": true,
+          "sourceUrl": null,
+          "nimbleRaw": {
+            "entity_type": "ShoppingResult",
+            "is_on_sale": true,
+            "item_link": "",
+            "old_price": "$2.89",
+            "position": 1,
+            "price": "$2.44",
+            "source": "Walmart - WJyouxuan",
+            "thumbnail": {
+              "alt": "Wireless Earbuds with Bluetooth 5.3, Stereo Bass, Bluetooth Sports Headphones, in Ear, Noise Cancelling. 15% OFF. ",
+              "image": "data:image/webp;base64,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"
+            },
+            "title": "Wireless Earbuds with Bluetooth 5.3, Stereo Bass, Bluetooth Sports Headphones, in Ear, Noise Cancelling"
+          },
+          "sourceMatch": {
+            "aliExpressTitle": "Heavy Bass Stereo Wireless Earbuds Bluetooth 5.3 In-Ear ...",
+            "aliExpressPrice": 12.49,
+            "aliExpressUrl": "https://www.aliexpress.com/item/1005008670855303.html",
+            "markup": 0.2
+          }
+        },
+        "trustScore": 20,
+        "verdict": "trap",
+        "flags": [
+          "Price $2.44 suggests AliExpress dropship",
+          "WJyouxuan is an unknown marketplace seller"
+        ],
+        "evidence": [
+          "Wireless Earbuds with Bluetooth 5.3, Stereo Bass, Bluetooth Sports Headphones, in Ear, Noise Cancelling is a keyword-stuffed title",
+          "Same product found on AliExpress for $12.49 — 0.2x markup"
         ]
       },
       {
@@ -111,7 +156,7 @@
           "price": "$5.00",
           "oldPrice": null,
           "merchant": "Target",
-          "thumbnailUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRTb1Yfnnh-Qx9NiuFBgPxBCvSXNZ4O-aYK0YjuGdEeFGyzuc6JIPWA6jawo2J-D7GALziqU4M2NDb_zUBGSXJoFNY1D-P5yBowFqHU6JccJ5w7kfq99oeDxQ",
+          "thumbnailUrl": "data:image/webp;base64,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",
           "isOnSale": false,
           "sourceUrl": null,
           "nimbleRaw": {
@@ -122,7 +167,7 @@
             "source": "Target",
             "thumbnail": {
               "alt": "Vivitar True Wireless Earbuds. ",
-              "image": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRTb1Yfnnh-Qx9NiuFBgPxBCvSXNZ4O-aYK0YjuGdEeFGyzuc6JIPWA6jawo2J-D7GALziqU4M2NDb_zUBGSXJoFNY1D-P5yBowFqHU6JccJ5w7kfq99oeDxQ"
+              "image": "data:image/webp;base64,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"
             },
             "title": "Vivitar True Wireless Earbuds"
           },
@@ -133,125 +178,15 @@
             "markup": 5.1
           }
         },
-        "trustScore": 10,
+        "trustScore": 25,
         "verdict": "trap",
         "flags": [
           "Price $5.00 suggests AliExpress dropship",
-          "Found on AliExpress for $0.99 — 5.05x markup"
+          "Same product found on AliExpress for $0.99 — 5.1x markup"
         ],
         "evidence": [
-          "Low price indicates a likely scam",
-          "Unknown seller and lack of reviews"
-        ]
-      },
-      {
-        "candidate": {
-          "title": "TREBLAB WX8 True Wireless Earbuds",
-          "price": "$29.97",
-          "oldPrice": null,
-          "merchant": "Best Buy",
-          "thumbnailUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSoNhOsjiLE76xRu-f-dBdVW4w6JM3xULM3MS-WoRJUUAOtrpTauuF6MAuCzYM9VOkwgnw6VqSnPdrdZwzkqpzJsUWT-xbZIDWvZsl9YwHAZY5xjY0RT1xYGg",
-          "isOnSale": false,
-          "sourceUrl": null,
-          "nimbleRaw": {
-            "entity_type": "ShoppingResult",
-            "item_link": "",
-            "position": 1,
-            "price": "$29.97",
-            "source": "Best Buy",
-            "thumbnail": {
-              "alt": "TREBLAB WX8 True Wireless Earbuds. ",
-              "image": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSoNhOsjiLE76xRu-f-dBdVW4w6JM3xULM3MS-WoRJUUAOtrpTauuF6MAuCzYM9VOkwgnw6VqSnPdrdZwzkqpzJsUWT-xbZIDWvZsl9YwHAZY5xjY0RT1xYGg"
-            },
-            "title": "TREBLAB WX8 True Wireless Earbuds"
-          }
-        },
-        "trustScore": 40,
-        "verdict": "trap",
-        "flags": [
-          "No verified discount"
-        ],
-        "evidence": [
-          "No old price or discount shown",
-          "Best Buy is a Tier 1 retailer, but no sale is indicated"
-        ]
-      },
-      {
-        "candidate": {
-          "title": "Sentry BT998 True Wireless Earhooks",
-          "price": "$18.99",
-          "oldPrice": "Usually $32",
-          "merchant": "Menards",
-          "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQCiu563lrwRPfUS-t5sZtKbDBiWfl7ycAMfbgBYm0KAxbatc80SBKTPbwBIwgQF2orkvksvkZ-Zn2U1bOD_2XMCdmlcPdE3Inc4TKadVRzMthPT0Dr8UNt2Q",
-          "isOnSale": true,
-          "sourceUrl": null,
-          "nimbleRaw": {
-            "entity_type": "ShoppingResult",
-            "is_on_sale": true,
-            "item_link": "",
-            "old_price": "Usually $32",
-            "position": 1,
-            "price": "$18.99",
-            "source": "Menards",
-            "thumbnail": {
-              "alt": "Sentry BT998 True Wireless Earhooks. Low price. ",
-              "image": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQCiu563lrwRPfUS-t5sZtKbDBiWfl7ycAMfbgBYm0KAxbatc80SBKTPbwBIwgQF2orkvksvkZ-Zn2U1bOD_2XMCdmlcPdE3Inc4TKadVRzMthPT0Dr8UNt2Q"
-            },
-            "title": "Sentry BT998 True Wireless Earhooks"
-          },
-          "sourceMatch": {
-            "aliExpressTitle": "Auriculares deportivos inalámbricos TWS, cascos con ...",
-            "aliExpressPrice": null,
-            "aliExpressUrl": "https://es.aliexpress.com/item/1005005736197745.html",
-            "markup": null
-          }
-        },
-        "trustScore": 10,
-        "verdict": "trap",
-        "flags": [
-          "Same product found on AliExpress — likely dropshipped"
-        ],
-        "evidence": [
-          "Menards is not a typical electronics retailer",
-          "Low price and unknown brand indicate a likely scam"
-        ]
-      },
-      {
-        "candidate": {
-          "title": "Onn. Wireless Earphones",
-          "price": "$11.83",
-          "oldPrice": null,
-          "merchant": "Walmart",
-          "thumbnailUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQL2FaoCxCqju5EHAhgU2T8M2sWZZlacMC32YjiRHQp6QeYE4nAP4NwpOk3mTpRmpiEpkETEx3jS5cPZSOcT0_IJxUFGMC4JaKwwqSMvzkvsdPxmiP9Ll_PSQ",
-          "isOnSale": false,
-          "sourceUrl": null,
-          "nimbleRaw": {
-            "entity_type": "ShoppingResult",
-            "item_link": "",
-            "position": 1,
-            "price": "$11.83",
-            "source": "Walmart",
-            "thumbnail": {
-              "alt": "Onn. Wireless Earphones. ",
-              "image": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQL2FaoCxCqju5EHAhgU2T8M2sWZZlacMC32YjiRHQp6QeYE4nAP4NwpOk3mTpRmpiEpkETEx3jS5cPZSOcT0_IJxUFGMC4JaKwwqSMvzkvsdPxmiP9Ll_PSQ"
-            },
-            "title": "Onn. Wireless Earphones"
-          },
-          "sourceMatch": {
-            "aliExpressTitle": "Onn wireless earphone-AliExpress",
-            "aliExpressPrice": null,
-            "aliExpressUrl": "https://www.aliexpress.com/w/wholesale-onn-wireless-earphone.html",
-            "markup": null
-          }
-        },
-        "trustScore": 10,
-        "verdict": "trap",
-        "flags": [
-          "Same product found on AliExpress — likely dropshipped"
-        ],
-        "evidence": [
-          "Low price indicates a likely scam",
-          "Unknown seller and lack of reviews"
+          "Target is a Tier 1 retailer with buyer protection, but product is also found on AliExpress",
+          "Vivitar True Wireless Earbuds may be a legitimate product, but lacks verified data and has a low price"
         ]
       },
       {
@@ -278,87 +213,58 @@
             "markup": 6.8
           }
         },
-        "trustScore": 10,
+        "trustScore": 30,
         "verdict": "trap",
         "flags": [
-          "Found on AliExpress for $7.36 — 6.8x markup"
+          "Same product found on AliExpress for $7.36 — 6.8x markup"
         ],
         "evidence": [
-          "B&H Photo-Video-Audio is not a typical electronics retailer for this product",
-          "High markup indicates a likely scam"
+          "B&H Photo-Video-Audio is a known retailer, but product is also found on AliExpress",
+          "Beats Flex Wireless is a legitimate product, but lacks verified data and has a high markup"
         ]
       },
       {
         "candidate": {
-          "title": "iLive Truly Wireless Earbuds",
-          "price": "$19.99",
-          "oldPrice": null,
-          "merchant": "DICK'S Sporting Goods",
-          "thumbnailUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQ3J8OTmd-tIO9hwLN63VgSzSBM2OPETkHe0HtjiXcu7SBuKgPq5ueLPckbRY5vBvQVGSvMsvvSZD7rtUY5TxiW3kKg-nHkNkfpMIPKHpjo6Q8MM3OdPqC6",
-          "isOnSale": false,
-          "sourceUrl": null,
-          "nimbleRaw": {
-            "entity_type": "ShoppingResult",
-            "item_link": "",
-            "position": 1,
-            "price": "$19.99",
-            "source": "DICK'S Sporting Goods",
-            "thumbnail": {
-              "alt": "iLive Truly Wireless Earbuds. ",
-              "image": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQ3J8OTmd-tIO9hwLN63VgSzSBM2OPETkHe0HtjiXcu7SBuKgPq5ueLPckbRY5vBvQVGSvMsvvSZD7rtUY5TxiW3kKg-nHkNkfpMIPKHpjo6Q8MM3OdPqC6"
-            },
-            "title": "iLive Truly Wireless Earbuds"
-          }
-        },
-        "trustScore": 40,
-        "verdict": "trap",
-        "flags": [
-          "No verified discount"
-        ],
-        "evidence": [
-          "No old price or discount shown",
-          "DICK'S Sporting Goods is not a typical electronics retailer"
-        ]
-      },
-      {
-        "candidate": {
-          "title": "Hoey Wireless Earbuds",
-          "price": "$16.99",
-          "oldPrice": "$19",
-          "merchant": "Walmart - HOEY INC",
-          "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTlkxzoMp2lLcpGE90j6fDYSriiSh_6X7SUJClUyUIO-LZxov_pIlq6j3qLiqgS9We6LllArSS7L9uOaXHBPBSR4iED8JANmpKsHMQw5hB9xaLhTlqqD5z68A",
+          "title": "Up to 65% off!Wireless Earbuds, Bluetooth 5.3 Earbuds Stereo Bass, Bluetooth Sports Headphones in Ear Noise Cancelling Mic With Mini Charging Case Ear",
+          "price": "$2.17",
+          "oldPrice": "$2.45",
+          "merchant": "Walmart - WJyouxuan",
+          "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcR2qUn8VAh9rfIw9jHr_osNyTGpVlpY_FbtsyWx9nykgnDIDCCUaeuNNq7WKRGWVGHkZyUYgj2cl0TlrECIvgJyutdCCuDKsO8TFqsjW1BK3vEDqqXQouJiYQ",
           "isOnSale": true,
           "sourceUrl": null,
           "nimbleRaw": {
             "entity_type": "ShoppingResult",
             "is_on_sale": true,
             "item_link": "",
-            "old_price": "$19",
+            "old_price": "$2.45",
             "position": 1,
-            "price": "$16.99",
-            "source": "Walmart - HOEY INC",
+            "price": "$2.17",
+            "source": "Walmart - WJyouxuan",
             "thumbnail": {
-              "alt": "Hoey Wireless Earbuds. 10% OFF. ",
-              "image": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTlkxzoMp2lLcpGE90j6fDYSriiSh_6X7SUJClUyUIO-LZxov_pIlq6j3qLiqgS9We6LllArSS7L9uOaXHBPBSR4iED8JANmpKsHMQw5hB9xaLhTlqqD5z68A"
+              "alt": "Up to 65% off!Wireless Earbuds, Bluetooth 5.3 Earbuds Stereo Bass, Bluetooth Sports Headphones in Ear Noise Cancelling Mic With Mini Charging Case Ear. 11% OFF. ",
+              "image": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcR2qUn8VAh9rfIw9jHr_osNyTGpVlpY_FbtsyWx9nykgnDIDCCUaeuNNq7WKRGWVGHkZyUYgj2cl0TlrECIvgJyutdCCuDKsO8TFqsjW1BK3vEDqqXQouJiYQ"
             },
-            "title": "Hoey Wireless Earbuds"
+            "title": "Up to 65% off!Wireless Earbuds, Bluetooth 5.3 Earbuds Stereo Bass, Bluetooth Sports Headphones in Ear Noise Cancelling Mic With Mini Charging Case Ear"
           }
         },
-        "trustScore": 40,
+        "trustScore": 15,
         "verdict": "trap",
-        "flags": [],
+        "flags": [
+          "Price $2.17 suggests AliExpress dropship",
+          "WJyouxuan is an unknown marketplace seller",
+          "Title is keyword-stuffed spam"
+        ],
         "evidence": [
-          "Walmart - HOEY INC is an unknown seller",
-          "Low price and lack of reviews indicate a likely scam"
+          "Wireless Earbuds, Bluetooth 5.3 Earbuds Stereo Bass, Bluetooth Sports Headphones in Ear Noise Cancelling Mic With Mini Charging Case Ear is a keyword-stuffed title"
         ]
       },
       {
         "candidate": {
-          "title": "Water-Resistant Bluetooth Led Earbuds With Microphone & Sport Hooks",
+          "title": "Icon Wireless Earbuds with Mic",
           "price": "$8.00",
           "oldPrice": null,
           "merchant": "Five Below",
-          "thumbnailUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRsdTLa5FV9eCqhbJemmZpZAjJ4dZ5v4ksnBoO6F4h4klhaOVtDtvS2G8nlzBuy0c8HhIMGDzQp1V4GeIiccauPbLfHcIyPeBvG-LIr23s0_e3LWU341V5T",
+          "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQ29aLh6QDSxrHvPgtgHvUB71SCIqQzG5UQABJiFxyy5qyXBENVNiR7Tn0tOKlQj6TJbzTZRNv2EEQdr9Dgz4bLfK7CXHMEYGn24aYwLBymdqhXCmgkh0ZdmA",
           "isOnSale": false,
           "sourceUrl": null,
           "nimbleRaw": {
@@ -368,68 +274,172 @@
             "price": "$8.00",
             "source": "Five Below",
             "thumbnail": {
-              "alt": "Water-Resistant Bluetooth Led Earbuds With Microphone & Sport Hooks. ",
-              "image": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRsdTLa5FV9eCqhbJemmZpZAjJ4dZ5v4ksnBoO6F4h4klhaOVtDtvS2G8nlzBuy0c8HhIMGDzQp1V4GeIiccauPbLfHcIyPeBvG-LIr23s0_e3LWU341V5T"
+              "alt": "Icon Wireless Earbuds with Mic. ",
+              "image": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQ29aLh6QDSxrHvPgtgHvUB71SCIqQzG5UQABJiFxyy5qyXBENVNiR7Tn0tOKlQj6TJbzTZRNv2EEQdr9Dgz4bLfK7CXHMEYGn24aYwLBymdqhXCmgkh0ZdmA"
             },
-            "title": "Water-Resistant Bluetooth Led Earbuds With Microphone & Sport Hooks"
+            "title": "Icon Wireless Earbuds with Mic"
+          }
+        },
+        "trustScore": 45,
+        "verdict": "trap",
+        "flags": [
+          "No verified discount"
+        ],
+        "evidence": [
+          "Five Below is a known retailer, but product lacks verified data",
+          "Icon Wireless Earbuds with Mic may be a legitimate product, but lacks verified sale data"
+        ]
+      },
+      {
+        "candidate": {
+          "title": "Onn. Wireless Earphones",
+          "price": "$14.88",
+          "oldPrice": null,
+          "merchant": "Walmart",
+          "thumbnailUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSWeKLF2_daZUCes_kiEnoZeoDqJu-QCuG2fmbc7M8VLjUw2hLtckXrUMQVzvPgjlJR5XLHIg-wcwxxYXd-Ky_kXHU1f4YBAoCGpp9la7TJ8bsFJLl_dhZD4A",
+          "isOnSale": false,
+          "sourceUrl": null,
+          "nimbleRaw": {
+            "entity_type": "ShoppingResult",
+            "item_link": "",
+            "position": 1,
+            "price": "$14.88",
+            "source": "Walmart",
+            "thumbnail": {
+              "alt": "Onn. Wireless Earphones. ",
+              "image": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSWeKLF2_daZUCes_kiEnoZeoDqJu-QCuG2fmbc7M8VLjUw2hLtckXrUMQVzvPgjlJR5XLHIg-wcwxxYXd-Ky_kXHU1f4YBAoCGpp9la7TJ8bsFJLl_dhZD4A"
+            },
+            "title": "Onn. Wireless Earphones"
+          }
+        },
+        "trustScore": 50,
+        "verdict": "trap",
+        "flags": [
+          "No verified discount"
+        ],
+        "evidence": [
+          "Walmart is a Tier 1 retailer with buyer protection",
+          "Onn. Wireless Earphones is a legitimate product, but lacks verified sale data"
+        ]
+      },
+      {
+        "candidate": {
+          "title": "Wireless Earbuds",
+          "price": "$2.44",
+          "oldPrice": null,
+          "merchant": "Walmart - WJyouxuan",
+          "thumbnailUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSZKdWbupy3VXjslTlncBd7wiZCDiEoInbPuKSGQa4VI_6U3XXu2blcweXjC6ccLDY6F1UU8TbzVoShcnPCH2Tt8fdihFCP7zspXjJ6KUN5njx00H9d6C1b",
+          "isOnSale": false,
+          "sourceUrl": null,
+          "nimbleRaw": {
+            "entity_type": "ShoppingResult",
+            "item_link": "",
+            "position": 1,
+            "price": "$2.44",
+            "source": "Walmart - WJyouxuan",
+            "thumbnail": {
+              "alt": "Wireless Earbuds. ",
+              "image": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSZKdWbupy3VXjslTlncBd7wiZCDiEoInbPuKSGQa4VI_6U3XXu2blcweXjC6ccLDY6F1UU8TbzVoShcnPCH2Tt8fdihFCP7zspXjJ6KUN5njx00H9d6C1b"
+            },
+            "title": "Wireless Earbuds"
           }
         },
         "trustScore": 10,
         "verdict": "trap",
-        "flags": [],
+        "flags": [
+          "Price $2.44 suggests AliExpress dropship",
+          "WJyouxuan is an unknown marketplace seller"
+        ],
         "evidence": [
-          "Five Below is not a typical electronics retailer",
-          "Low price indicates a likely scam"
+          "Wireless Earbuds is a generic title",
+          "Lack of verified data and low price suggests a potential scam"
         ]
       },
       {
         "candidate": {
-          "title": "WixGear Wireless Earbuds",
-          "price": "$18.99",
+          "title": "Tech and Go Wireless Earphones with Built-In Mic",
+          "price": "$15.27",
           "oldPrice": null,
-          "merchant": "WixGear.com",
-          "thumbnailUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQf4kpsHVBKCK9xVt8MgS_pHvrMV5ZGhsiU9ppFUB5t7k72BcouF7yJwkDl5E4b5lRM7J6w2iizPl2wGqvhT_2fdf7vomHGlqrvC0fz7rwCCZamdEHDtxQRxw",
+          "merchant": "Home Depot",
+          "thumbnailUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRfFNmVsTnvrp77BZTtl9mDgms_nA6KDOFIL6B42_YpWBtV40Yc78vGE3JrVu6M2KeE4uDenWOQ_jQ0Rc3B2H4FJXQL71QQL0T9OnA6Y05oOaBnfZkbmpYMMA",
           "isOnSale": false,
           "sourceUrl": null,
           "nimbleRaw": {
             "entity_type": "ShoppingResult",
             "item_link": "",
             "position": 1,
-            "price": "$18.99",
-            "source": "WixGear.com",
+            "price": "$15.27",
+            "source": "Home Depot",
             "thumbnail": {
-              "alt": "WixGear Wireless Earbuds. ",
-              "image": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQf4kpsHVBKCK9xVt8MgS_pHvrMV5ZGhsiU9ppFUB5t7k72BcouF7yJwkDl5E4b5lRM7J6w2iizPl2wGqvhT_2fdf7vomHGlqrvC0fz7rwCCZamdEHDtxQRxw"
+              "alt": "Tech and Go Wireless Earphones with Built-In Mic. ",
+              "image": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRfFNmVsTnvrp77BZTtl9mDgms_nA6KDOFIL6B42_YpWBtV40Yc78vGE3JrVu6M2KeE4uDenWOQ_jQ0Rc3B2H4FJXQL71QQL0T9OnA6Y05oOaBnfZkbmpYMMA"
             },
-            "title": "WixGear Wireless Earbuds"
+            "title": "Tech and Go Wireless Earphones with Built-In Mic"
           }
         },
-        "trustScore": 40,
+        "trustScore": 35,
         "verdict": "trap",
         "flags": [
           "No verified discount"
         ],
         "evidence": [
-          "No old price or discount shown",
-          "WixGear.com is an unknown seller"
+          "Home Depot is a known retailer, but product is not a typical electronics item",
+          "Tech and Go Wireless Earphones with Built-In Mic may be a legitimate product, but lacks verified data"
         ]
       },
       {
         "candidate": {
-          "title": "JLab GO Air Tones True Wireless Earbuds",
-          "price": "$29.99",
+          "title": "Wireless Earbuds Bluetooth 5.3 Earphones 30H Playback Deep Bass Stereo Ear Buds with LED Power Display Charging Case Ipx5 Waterproof Earphones 50% off",
+          "price": "$3.34",
           "oldPrice": null,
-          "merchant": "Target",
-          "thumbnailUrl": null,
+          "merchant": "Walmart - WJyouxuan",
+          "thumbnailUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTf3h9oMRTHaavDeVFb58-Ras4zNrCZWcr0Pqf0bBzaNJPFLQWKZ4nuPJKyF1rNmFvTS83LfF_m2SqtlLf4kI5cY0quPsla363eQn7FU3KXPE8-02SrbJjAvQ",
           "isOnSale": false,
           "sourceUrl": null,
           "nimbleRaw": {
             "entity_type": "ShoppingResult",
             "item_link": "",
             "position": 1,
-            "price": "$29.99",
-            "source": "Target",
-            "title": "JLab GO Air Tones True Wireless Earbuds"
+            "price": "$3.34",
+            "source": "Walmart - WJyouxuan",
+            "thumbnail": {
+              "alt": "Wireless Earbuds Bluetooth 5.3 Earphones 30H Playback Deep Bass Stereo Ear Buds with LED Power Display Charging Case Ipx5 Waterproof Earphones 50% off. ",
+              "image": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTf3h9oMRTHaavDeVFb58-Ras4zNrCZWcr0Pqf0bBzaNJPFLQWKZ4nuPJKyF1rNmFvTS83LfF_m2SqtlLf4kI5cY0quPsla363eQn7FU3KXPE8-02SrbJjAvQ"
+            },
+            "title": "Wireless Earbuds Bluetooth 5.3 Earphones 30H Playback Deep Bass Stereo Ear Buds with LED Power Display Charging Case Ipx5 Waterproof Earphones 50% off"
+          }
+        },
+        "trustScore": 5,
+        "verdict": "trap",
+        "flags": [
+          "Price $3.34 suggests AliExpress dropship",
+          "WJyouxuan is an unknown marketplace seller",
+          "Title is keyword-stuffed spam"
+        ],
+        "evidence": [
+          "Wireless Earbuds Bluetooth 5.3 Earphones 30H Playback Deep Bass Stereo Ear Buds with LED Power Display Charging Case Ipx5 Waterproof Earphones 50% off is a keyword-stuffed title"
+        ]
+      },
+      {
+        "candidate": {
+          "title": "Bytech Rugged True Wireless Earbuds",
+          "price": "$8.00",
+          "oldPrice": null,
+          "merchant": "Five Below",
+          "thumbnailUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQLiIAtaqaurmi_Fpbgl00sl7rtIAVLXLK9MWb3cHLVlGtNr_U_lbb17y-CpbKrWhl1kLdNIHhoYeDstTho4K7J8llI0XBSldlOsN4fRpvF9MHG_iC0BatLfg",
+          "isOnSale": false,
+          "sourceUrl": null,
+          "nimbleRaw": {
+            "entity_type": "ShoppingResult",
+            "item_link": "",
+            "position": 1,
+            "price": "$8.00",
+            "source": "Five Below",
+            "thumbnail": {
+              "alt": "Bytech Rugged True Wireless Earbuds. ",
+              "image": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQLiIAtaqaurmi_Fpbgl00sl7rtIAVLXLK9MWb3cHLVlGtNr_U_lbb17y-CpbKrWhl1kLdNIHhoYeDstTho4K7J8llI0XBSldlOsN4fRpvF9MHG_iC0BatLfg"
+            },
+            "title": "Bytech Rugged True Wireless Earbuds"
           }
         },
         "trustScore": 40,
@@ -438,8 +448,40 @@
           "No verified discount"
         ],
         "evidence": [
-          "No old price or discount shown",
-          "Target is a Tier 1 retailer, but no sale is indicated"
+          "Five Below is a known retailer, but product lacks verified data",
+          "Bytech Rugged True Wireless Earbuds may be a legitimate product, but lacks verified sale data"
+        ]
+      },
+      {
+        "candidate": {
+          "title": "Wireless Gear True Wireless Earbuds",
+          "price": "$7.50",
+          "oldPrice": null,
+          "merchant": "Dollar General",
+          "thumbnailUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTu4NqHWqAzLk5B2P6P1T8oRObeb3yenoP6HypAwdlW3edDbyL3pxCCh07en9Tb7djB8utfZofwo-P7YJaK4ImfVlJt9OsAV441LUZb0PEHnXIPKzKvXzhS",
+          "isOnSale": false,
+          "sourceUrl": null,
+          "nimbleRaw": {
+            "entity_type": "ShoppingResult",
+            "item_link": "",
+            "position": 1,
+            "price": "$7.50",
+            "source": "Dollar General",
+            "thumbnail": {
+              "alt": "Wireless Gear True Wireless Earbuds. ",
+              "image": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTu4NqHWqAzLk5B2P6P1T8oRObeb3yenoP6HypAwdlW3edDbyL3pxCCh07en9Tb7djB8utfZofwo-P7YJaK4ImfVlJt9OsAV441LUZb0PEHnXIPKzKvXzhS"
+            },
+            "title": "Wireless Gear True Wireless Earbuds"
+          }
+        },
+        "trustScore": 30,
+        "verdict": "trap",
+        "flags": [
+          "No verified discount"
+        ],
+        "evidence": [
+          "Dollar General is a known retailer, but product lacks verified data",
+          "Wireless Gear True Wireless Earbuds may be a legitimate product, but lacks verified sale data"
         ]
       }
     ],
@@ -447,18 +489,20 @@
       {
         "candidate": {
           "title": "JLab Go Air Pop True Wireless Earbuds",
-          "price": "$24.99",
-          "oldPrice": null,
-          "merchant": "Best Buy",
+          "price": "$16.99",
+          "oldPrice": "$29",
+          "merchant": "Walmart",
           "thumbnailUrl": null,
-          "isOnSale": false,
+          "isOnSale": true,
           "sourceUrl": null,
           "nimbleRaw": {
             "entity_type": "ShoppingResult",
+            "is_on_sale": true,
             "item_link": "",
+            "old_price": "$29",
             "position": 1,
-            "price": "$24.99",
-            "source": "Best Buy",
+            "price": "$16.99",
+            "source": "Walmart",
             "title": "JLab Go Air Pop True Wireless Earbuds"
           },
           "enrichment": {
@@ -481,84 +525,22 @@
             }
           }
         },
-        "trustScore": 80,
+        "trustScore": 85,
         "verdict": "trusted",
         "flags": [],
         "evidence": [
-          "Best Buy is a Tier 1 retailer with buyer protection",
-          "Verified data shows a genuine sale price of $24.88 (was $29.38)",
-          "High rating of 4.5/5 from 39,064 reviews"
+          "Walmart is a Tier 1 retailer with buyer protection",
+          "VERIFIED DATA: Real price $24.88 (was $29.38, genuine sale). Seller: Walmart.com (1st party). Brand: JLab. Rating: 4.5/5 from 39,064 reviews",
+          "Discount of $4.50 from $29 is a verified seasonal sale"
         ]
       },
       {
         "candidate": {
-          "title": "Soundcore P31i Wireless Earbuds",
-          "price": "$34.99",
-          "oldPrice": "$37",
-          "merchant": "Best Buy",
-          "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcT7167HtkepmGcEvwXl-IBUe9Nu5NR3DHHiNpE5wpwX2BQqUG6KnPaDmmXMEXroLu_yWZiKowtbZiCJBOuGNvA0iQJGz0YORZevRA1qKJmbvxuCH1ibYPwKMw",
-          "isOnSale": true,
-          "sourceUrl": null,
-          "nimbleRaw": {
-            "entity_type": "ShoppingResult",
-            "is_on_sale": true,
-            "item_link": "",
-            "old_price": "$37",
-            "position": 1,
-            "price": "$34.99",
-            "source": "Best Buy",
-            "thumbnail": {
-              "alt": "Soundcore P31i Wireless Earbuds. 5% OFF. ",
-              "image": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcT7167HtkepmGcEvwXl-IBUe9Nu5NR3DHHiNpE5wpwX2BQqUG6KnPaDmmXMEXroLu_yWZiKowtbZiCJBOuGNvA0iQJGz0YORZevRA1qKJmbvxuCH1ibYPwKMw"
-            },
-            "title": "Soundcore P31i Wireless Earbuds"
-          }
-        },
-        "trustScore": 60,
-        "verdict": "trusted",
-        "flags": [],
-        "evidence": [
-          "Best Buy is a Tier 1 retailer with buyer protection",
-          "Discount of $2.01 from $37 is a reasonable sale"
-        ]
-      },
-      {
-        "candidate": {
-          "title": "JLab Go Pop ANC True Wireless Earbuds",
-          "price": "$29.99",
-          "oldPrice": null,
-          "merchant": "JLab",
-          "thumbnailUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSh76itRQWC7qo014YXsZkBVWADvNNWZECnC6XMirH0Z877ERDZoNI7Zni6vG_m-r2hMPQ7BhR5dUolTCovtlWYLDizo9NKwXo_j7Pi3lzGAZAi41Xqe53CKQ",
-          "isOnSale": false,
-          "sourceUrl": null,
-          "nimbleRaw": {
-            "entity_type": "ShoppingResult",
-            "item_link": "",
-            "position": 1,
-            "price": "$29.99",
-            "source": "JLab",
-            "thumbnail": {
-              "alt": "JLab Go Pop ANC True Wireless Earbuds. ",
-              "image": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSh76itRQWC7qo014YXsZkBVWADvNNWZECnC6XMirH0Z877ERDZoNI7Zni6vG_m-r2hMPQ7BhR5dUolTCovtlWYLDizo9NKwXo_j7Pi3lzGAZAi41Xqe53CKQ"
-            },
-            "title": "JLab Go Pop ANC True Wireless Earbuds"
-          }
-        },
-        "trustScore": 60,
-        "verdict": "trusted",
-        "flags": [],
-        "evidence": [
-          "JLab is a known brand selling direct",
-          "Price of $29.99 is reasonable for a true wireless earbud"
-        ]
-      },
-      {
-        "candidate": {
-          "title": "JLab Go Pods ANC True Wireless Earbuds",
-          "price": "$20.99",
+          "title": "JLab GO Air Sport True Wireless Earbuds",
+          "price": "$24.99",
           "oldPrice": "$30",
-          "merchant": "Walmart",
-          "thumbnailUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQShhPl7aJX4k-UH3ctmsNRdvJusB0ppolh6UDcF5KZu4jtT27PJ2FmLXuPoihYn2K_h6UPfo2W6xgOeXT4Bv_3oDIIwRZtaKSftOuXUA1ScoKerBSwMYFIyQ",
+          "merchant": "Best Buy",
+          "thumbnailUrl": null,
           "isOnSale": true,
           "sourceUrl": null,
           "nimbleRaw": {
@@ -567,21 +549,126 @@
             "item_link": "",
             "old_price": "$30",
             "position": 1,
-            "price": "$20.99",
-            "source": "Walmart",
-            "thumbnail": {
-              "alt": "JLab Go Pods ANC True Wireless Earbuds. 30% OFF. ",
-              "image": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQShhPl7aJX4k-UH3ctmsNRdvJusB0ppolh6UDcF5KZu4jtT27PJ2FmLXuPoihYn2K_h6UPfo2W6xgOeXT4Bv_3oDIIwRZtaKSftOuXUA1ScoKerBSwMYFIyQ"
-            },
-            "title": "JLab Go Pods ANC True Wireless Earbuds"
+            "price": "$24.99",
+            "source": "Best Buy",
+            "title": "JLab GO Air Sport True Wireless Earbuds"
           }
         },
         "trustScore": 60,
         "verdict": "trusted",
         "flags": [],
         "evidence": [
+          "Best Buy is a Tier 1 retailer with buyer protection",
+          "JLab GO Air Sport True Wireless Earbuds is a legitimate product",
+          "Discount of $5.01 from $30 is a potential sale, but lacks verified data"
+        ]
+      },
+      {
+        "candidate": {
+          "title": "Skullcandy Smokin' Buds XT True Wireless in-Ear Earbuds",
+          "price": "$19.88",
+          "oldPrice": null,
+          "merchant": "Walmart",
+          "thumbnailUrl": "data:image/webp;base64,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",
+          "isOnSale": false,
+          "sourceUrl": null,
+          "nimbleRaw": {
+            "entity_type": "ShoppingResult",
+            "item_link": "",
+            "position": 1,
+            "price": "$19.88",
+            "source": "Walmart",
+            "thumbnail": {
+              "alt": "Skullcandy Smokin' Buds XT True Wireless in-Ear Earbuds. ",
+              "image": "data:image/webp;base64,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"
+            },
+            "title": "Skullcandy Smokin' Buds XT True Wireless in-Ear Earbuds"
+          },
+          "enrichment": {
+            "realPrice": "$19.88",
+            "wasPrice": null,
+            "isPriceReduced": false,
+            "sellerName": "Walmart.com",
+            "brand": "Skullcandy",
+            "inStock": true,
+            "averageRating": 4.4,
+            "totalReviews": 9196,
+            "reviewsWithText": 2377,
+            "recommendedPercent": 76,
+            "ratingDistribution": {
+              "stars5": 6782,
+              "stars4": 995,
+              "stars3": 460,
+              "stars2": 244,
+              "stars1": 715
+            }
+          }
+        },
+        "trustScore": 80,
+        "verdict": "trusted",
+        "flags": [],
+        "evidence": [
           "Walmart is a Tier 1 retailer with buyer protection",
-          "Discount of $9.01 from $30 is a reasonable sale"
+          "VERIFIED DATA: Real price $19.88. Seller: Walmart.com (1st party). Brand: Skullcandy. Rating: 4.4/5 from 9,196 reviews",
+          "Skullcandy Smokin' Buds XT True Wireless in-Ear Earbuds is a recommended product by rtings.com and amazon"
+        ]
+      },
+      {
+        "candidate": {
+          "title": "JLab Go Pods ANC True Wireless Earbuds",
+          "price": "$23.99",
+          "oldPrice": "$30",
+          "merchant": "JLab",
+          "thumbnailUrl": null,
+          "isOnSale": true,
+          "sourceUrl": null,
+          "nimbleRaw": {
+            "entity_type": "ShoppingResult",
+            "is_on_sale": true,
+            "item_link": "",
+            "old_price": "$30",
+            "position": 1,
+            "price": "$23.99",
+            "source": "JLab",
+            "title": "JLab Go Pods ANC True Wireless Earbuds"
+          }
+        },
+        "trustScore": 65,
+        "verdict": "trusted",
+        "flags": [],
+        "evidence": [
+          "JLab is a Tier 2 retailer selling direct",
+          "JLab Go Pods ANC True Wireless Earbuds is a legitimate product",
+          "Discount of $6.01 from $30 may be a genuine sale"
+        ]
+      },
+      {
+        "candidate": {
+          "title": "JLab JBuds Mini True Wireless Earbuds",
+          "price": "$31.00",
+          "oldPrice": "$40",
+          "merchant": "Best Buy",
+          "thumbnailUrl": null,
+          "isOnSale": true,
+          "sourceUrl": null,
+          "nimbleRaw": {
+            "entity_type": "ShoppingResult",
+            "is_on_sale": true,
+            "item_link": "",
+            "old_price": "$40",
+            "position": 1,
+            "price": "$31.00",
+            "source": "Best Buy",
+            "title": "JLab JBuds Mini True Wireless Earbuds"
+          }
+        },
+        "trustScore": 70,
+        "verdict": "trusted",
+        "flags": [],
+        "evidence": [
+          "Best Buy is a Tier 1 retailer with buyer protection",
+          "JLab JBuds Mini True Wireless Earbuds is a legitimate product",
+          "Discount of $9 from $40 may be a genuine sale"
         ]
       },
       {
@@ -608,109 +695,13 @@
             "title": "TOZO T6 Wireless Earbuds Bluetooth 5.3 Headphones"
           }
         },
-        "trustScore": 60,
+        "trustScore": 75,
         "verdict": "trusted",
         "flags": [],
         "evidence": [
           "Best Buy is a Tier 1 retailer with buyer protection",
-          "Discount of $4.01 from $27 is a reasonable sale"
-        ]
-      },
-      {
-        "candidate": {
-          "title": "JLab Go Tones+ True Wireless Earbuds",
-          "price": "$24.99",
-          "oldPrice": null,
-          "merchant": "JLab",
-          "thumbnailUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSyucM2IlV78FfURzyrYojG_N5oXLEWhkBrWChpuRypzyOP_DhrvcM5Z6EHNr56NjdLMHczKUbAORXGrD63uwZyJXYfhC7toTEBWav_rPnqfIZPyKaKEpOyoA",
-          "isOnSale": false,
-          "sourceUrl": null,
-          "nimbleRaw": {
-            "entity_type": "ShoppingResult",
-            "item_link": "",
-            "position": 1,
-            "price": "$24.99",
-            "source": "JLab",
-            "thumbnail": {
-              "alt": "JLab Go Tones+ True Wireless Earbuds. ",
-              "image": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSyucM2IlV78FfURzyrYojG_N5oXLEWhkBrWChpuRypzyOP_DhrvcM5Z6EHNr56NjdLMHczKUbAORXGrD63uwZyJXYfhC7toTEBWav_rPnqfIZPyKaKEpOyoA"
-            },
-            "title": "JLab Go Tones+ True Wireless Earbuds"
-          }
-        },
-        "trustScore": 60,
-        "verdict": "trusted",
-        "flags": [],
-        "evidence": [
-          "JLab is a known brand selling direct",
-          "Price of $24.99 is reasonable for a true wireless earbud"
-        ]
-      },
-      {
-        "candidate": {
-          "title": "JLab JBuds Mini True Wireless Earbuds",
-          "price": "$31.00",
-          "oldPrice": "$40",
-          "merchant": "Best Buy",
-          "thumbnailUrl": null,
-          "isOnSale": true,
-          "sourceUrl": null,
-          "nimbleRaw": {
-            "entity_type": "ShoppingResult",
-            "is_on_sale": true,
-            "item_link": "",
-            "old_price": "$40",
-            "position": 1,
-            "price": "$31.00",
-            "source": "Best Buy",
-            "title": "JLab JBuds Mini True Wireless Earbuds"
-          }
-        },
-        "trustScore": 60,
-        "verdict": "trusted",
-        "flags": [],
-        "evidence": [
-          "Best Buy is a Tier 1 retailer with buyer protection",
-          "Discount of $9.00 from $40 is a reasonable sale"
-        ]
-      },
-      {
-        "candidate": {
-          "title": "Skullcandy Smokin' Buds XT True Wireless in-Ear Earbuds",
-          "price": "$19.88",
-          "oldPrice": null,
-          "merchant": "Walmart.com",
-          "thumbnailUrl": null,
-          "isOnSale": false,
-          "sourceUrl": "https://www.walmart.com/ip/Skullcandy-Smokin-Buds-XT-True-Wireless-in-Ear-Earbuds-Black/1546280223",
-          "enrichment": {
-            "realPrice": "$19.88",
-            "wasPrice": null,
-            "isPriceReduced": false,
-            "sellerName": "Walmart.com",
-            "brand": "Skullcandy",
-            "inStock": true,
-            "averageRating": 4.4,
-            "totalReviews": 9196,
-            "reviewsWithText": 2377,
-            "recommendedPercent": 76,
-            "ratingDistribution": {
-              "stars5": 6782,
-              "stars4": 995,
-              "stars3": 460,
-              "stars2": 244,
-              "stars1": 715
-            }
-          },
-          "nimbleRaw": null
-        },
-        "trustScore": 80,
-        "verdict": "trusted",
-        "flags": [],
-        "evidence": [
-          "Walmart.com is a Tier 1 retailer with buyer protection",
-          "Verified data shows a genuine price of $19.88",
-          "High rating of 4.4/5 from 9,196 reviews"
+          "TOZO T6 Wireless Earbuds Bluetooth 5.3 Headphones is a legitimate product",
+          "Discount of $4 from $27 may be a genuine sale"
         ]
       }
     ]

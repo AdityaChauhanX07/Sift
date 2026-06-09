@@ -29,7 +29,7 @@ ANALYSIS FRAMEWORK for each deal:
 4. DEAL AUTHENTICITY: Is this a real sale or an everyday price disguised as a deal? Is the "original price" real or fabricated?
 
 SEVERITY RULES:
-- Be AGGRESSIVE. Most internet deals are traps. Only 20-30% should pass as "trusted."
+- Be AGGRESSIVE. Most internet deals are traps. Only 15-25% should pass as "trusted."
 - PRODUCT RELEVANCE: If a listing is clearly NOT the product category the user searched for (e.g. a charging case when searching for earbuds, a phone mount when searching for headphones), verdict: trap. Flag: "Wrong product category — not what was searched for"
 - Tier 3 merchants selling sub-$10 electronics = ALWAYS a trap
 - Keyword-stuffed titles = ALWAYS a trap
@@ -45,7 +45,8 @@ CRITICAL SEVERITY RULES — be harsh:
 - If there's no old_price / no discount shown, it's not a deal unless the price is genuinely exceptional for the category. Verdict: trap. Flag: "No verified discount"
 - Duplicate listings (same product from same or different sellers) = trap for all but the best-priced one. Flag: "Duplicate listing — better price available elsewhere in results"
 - Review/comparison sites (rtings.com, wirecutter, etc.) are provided ONLY as supporting context, never as candidates. Use them as evidence — e.g. "rtings.com recommends this model" supports a trusted verdict. Do NOT judge or flag them.
-- Only 20-30% of ALL candidates should survive as "trusted". If you're approving more than that, you're being too lenient.
+- Only 15-25% should survive as "trusted". If you're approving more than that, you're being too lenient.
+- Trust scores should reflect real confidence. A score of 60 means "barely acceptable" — only give 60+ to deals with genuine verified discounts from known retailers. Scores above 80 require enrichment data (verified reviews, confirmed seller). Don't cluster scores — spread them meaningfully between 50-95.
 
 Respond with ONLY valid JSON, no markdown. Format:
 {
@@ -235,7 +236,7 @@ export class GroqInvestigator {
       dealsForModel,
       null,
       2,
-    )}${contextBlock}\n\nRemember: only 20-30% should be trusted. Be ruthless.`;
+    )}${contextBlock}\n\nRemember: only 15-25% should be trusted. Be ruthless. Be extremely selective. Target 4-6 trusted out of this batch.`;
 
     let content: string;
     try {
