@@ -14,6 +14,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Favicon — the SiftMark (funnel + magnifying glass). SVG for modern
+            browsers, .ico as a fallback. */}
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/favicon.ico" sizes="32x32" />
+
         {/* Sift design fonts — Archivo (display) + JetBrains Mono.
             Loaded via <link> rather than next/font so sift.css can keep
             referencing the literal "Archivo" / "JetBrains Mono" family names. */}
