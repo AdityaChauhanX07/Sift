@@ -39,7 +39,7 @@ The investigation panel streams all of this live so you can watch Nimble working
 
 ## Tech stack
 
-- **Next.js 14** (App Router) + Tailwind CSS
+- **Next.js 14** (App Router) + custom CSS
 - **Nimble** SERP + Web APIs for all web data
 - **Groq** (Llama 3.3 70B) for deal classification
 - TypeScript, streaming NDJSON for the live investigation panel
@@ -64,16 +64,6 @@ npm run dev
 ```
 
 The golden demo query ("wireless earbuds under $50") is pre-cached so it works instantly without any API keys. Live queries need valid Nimble and Groq credentials.
-
-## Scripts
-
-- `npm run dev` - start the dev server
-- `npm run cache:golden` - re-cache the demo query
-- `npm run enrich:golden` - re-cache with Nimble Extract enrichment
-- `npm run test:nimble` - test Nimble SERP connection
-- `npm run test:extract` - test Nimble Extract on a product URL
-- `npm run test:aliexpress` - test AliExpress source lookup
-- `npm run test:stress` - run all 8 stress tests
 
 ## The concept
 
