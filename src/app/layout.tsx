@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Sift — forensic shopping",
+  title: "Sift",
   description:
     "Sift investigates every listing for your query, kills the traps — fake reviews, ghost sellers, drop-ship markups — and shows you only the deals worth trusting.",
 };
