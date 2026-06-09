@@ -363,7 +363,6 @@ function TrustedCard({
           ${price.toFixed(2)}
           {was > price && <span className="was">${was.toFixed(2)}</span>}
         </div>
-        <span className="tcard__cta">view evidence →</span>
       </div>
     </article>
   );
