@@ -1,46 +1,9 @@
+/*
+ * Deprecated. The app's styling now lives in sift.css (imported by page.tsx).
+ * This file is no longer imported anywhere; the old Tailwind-based body /
+ * scrollbar / token rules were removed because they conflicted with sift.css.
+ * Kept only as Tailwind's entry point in case utility classes are reintroduced.
+ */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-:root {
-  --background: #09090b;
-  --foreground: #fafafa;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: var(--font-inter), system-ui, sans-serif;
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-  /* Animation delay helpers for staggered reveals. */
-  .anim-delay-100 {
-    animation-delay: 100ms;
-  }
-  .anim-delay-200 {
-    animation-delay: 200ms;
-  }
-  .anim-delay-300 {
-    animation-delay: 300ms;
-  }
-}
-
-/* Thin custom scrollbar for the dense trap wall, dashboard feel. */
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-::-webkit-scrollbar-track {
-  background: #09090b;
-}
-::-webkit-scrollbar-thumb {
-  background: #27272a;
-  border-radius: 9999px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #3f3f46;
-}
