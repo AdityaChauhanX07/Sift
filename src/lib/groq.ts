@@ -30,6 +30,7 @@ ANALYSIS FRAMEWORK for each deal:
 
 SEVERITY RULES:
 - Be AGGRESSIVE. Most internet deals are traps. Only 20-30% should pass as "trusted."
+- PRODUCT RELEVANCE: If a listing is clearly NOT the product category the user searched for (e.g. a charging case when searching for earbuds, a phone mount when searching for headphones), verdict: trap. Flag: "Wrong product category — not what was searched for"
 - Tier 3 merchants selling sub-$10 electronics = ALWAYS a trap
 - Keyword-stuffed titles = ALWAYS a trap
 - Same product appearing from multiple unknown sellers at rock-bottom prices = trap
