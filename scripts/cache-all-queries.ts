@@ -14,6 +14,8 @@ import { config } from "dotenv";
 // reads them at construction time.
 config({ path: ".env.local" });
 
+import type { SiftResult } from "../src/lib/types";
+
 /** The five queries offered as chips on the landing command line. */
 const QUERIES = [
   "wireless earbuds under $50",
@@ -32,7 +34,41 @@ interface Summary {
   total?: number;
   traps?: number;
   trusted?: number;
+  enriched?: number;
   error?: string;
+}
+
+/**
+ * Print every candidate that picked up verified Extract data during the run.
+ * investigate() runs attachEnrichment internally, so enriched candidates show up
+ * on the returned result's traps/trusted lists via candidate.enrichment.
+ * Returns how many were enriched so the summary can report it.
+ */
+function reportEnrichment(label: string, result: SiftResult): number {
+  const enriched = [...result.traps, ...result.trusted].filter(
+    (r) => r.candidate.enrichment,
+  );
+
+  if (enriched.length === 0) {
+    console.log(`${label} — no candidates got enrichment data`);
+    return 0;
+  }
+
+  console.log(`${label} — ${enriched.length} candidate(s) enriched:`);
+  for (const r of enriched) {
+    const e = r.candidate.enrichment!;
+    const price = e.realPrice ?? "?";
+    const was = e.wasPrice ? ` (was ${e.wasPrice})` : "";
+    const rating =
+      e.averageRating !== null
+        ? `${e.averageRating}/5 from ${e.totalReviews ?? "?"} reviews`
+        : "no rating";
+    console.log(`    • [${r.verdict}] ${r.candidate.title}`);
+    console.log(
+      `        ${price}${was} · ${rating} · seller ${e.sellerName ?? "?"}`,
+    );
+  }
+  return enriched.length;
 }
 
 async function main() {
@@ -60,12 +96,16 @@ async function main() {
       console.log(
         `${label} — cached · total ${result.totalChecked} · traps ${result.traps.length} · trusted ${result.trusted.length}`,
       );
+      // investigate() ran attachSourceMatches + attachEnrichment internally;
+      // show which candidates actually came back with verified Extract data.
+      const enriched = reportEnrichment(label, result);
       summaries.push({
         query,
         status: "cached",
         total: result.totalChecked,
         traps: result.traps.length,
         trusted: result.trusted.length,
+        enriched,
       });
     } catch (err) {
       const error = err instanceof Error ? err.message : String(err);
@@ -80,7 +120,7 @@ async function main() {
   for (const s of summaries) {
     if (s.status === "cached") {
       console.log(
-        `  ✅ ${s.query.padEnd(34)} total ${s.total} · ${s.traps} traps · ${s.trusted} trusted`,
+        `  ✅ ${s.query.padEnd(34)} total ${s.total} · ${s.traps} traps · ${s.trusted} trusted · ${s.enriched} enriched`,
       );
     } else if (s.status === "skipped") {
       console.log(`  ⏭  ${s.query.padEnd(34)} already cached (skipped)`);
