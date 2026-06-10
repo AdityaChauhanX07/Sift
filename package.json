@@ -14,6 +14,7 @@
     "test:stress": "tsx scripts/stress-test.ts",
     "test:deep": "tsx scripts/deep-test.ts",
     "cache:golden": "tsx scripts/cache-golden-query.ts",
+    "cache:all": "tsx scripts/cache-all-queries.ts",
     "enrich:golden": "tsx scripts/enrich-golden-query.ts"
   },
   "dependencies": {
